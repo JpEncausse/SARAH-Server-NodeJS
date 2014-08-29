@@ -1,0 +1,156 @@
+@import "mixins.less";
+
+// ------------------------------------------
+//  FONT
+// ------------------------------------------
+
+@font-face {
+	font-family: 'verbcondregular';
+	src: url('../font/VerbCondRegular-webfont.eot');
+	src: url('../font/VerbCondRegular-webfont.eot?#iefix') format('embedded-opentype'),
+	     url('../font/VerbCondRegular-webfont.woff') format('woff'),
+	     url('../font/VerbCondRegular-webfont.ttf') format('truetype'),
+	     url('../font/VerbCondRegular-webfont.svg#verbcondregular') format('svg');
+	font-weight: normal;
+	font-style: normal;
+}
+
+@font-face {
+  font-family: 'Open Sans Condensed Light';
+  font-style: normal;
+  font-weight: 300;
+  src: local('Open Sans Cond Light'), local('OpenSans-CondensedLight'), url(../font/opensans300.woff) format('woff');
+}
+
+@font-face {
+  font-family: 'Open Sans Condensed';
+  font-style: normal;
+  font-weight: 700;
+  src: local('Open Sans Condensed Bold'), local('OpenSans-CondensedBold'), url(../font/opensans700.woff) format('woff');
+}
+
+H1, H2, H3, H4 { font-family: 'Open Sans Condensed', sans-serif; }
+BODY { font-family: 'Open Sans Condensed', sans-serif; }
+.OpenSansLight { 
+  font-family: 'Open Sans Condensed Light', sans-serif;
+  font-size: 16px;
+  text-align: justify;
+  text-justify: inter-word;
+}
+
+// ------------------------------------------
+//  SCROLLBAR
+// ------------------------------------------
+
+::-webkit-scrollbar {
+	width: 10px;  
+	height: 10px;
+}
+::-webkit-scrollbar-track {
+	background: #EEE;
+	-webkit-box-shadow: inset 1px 1px 2px rgba(0,0,0,0.1);
+}
+::-webkit-scrollbar-thumb {
+	background: #CCC;
+	-webkit-box-shadow: inset 1px 1px 2px rgba(0,0,0,0.2);
+	&:hover { 
+	  background: #AAA; 
+	}
+	&:active { 
+	  background: #888; 
+	  -webkit-box-shadow: inset 1px 1px 2px rgba(0,0,0,0.3);
+	}
+}
+
+// ------------------------------------------
+//  COMPONENTS
+// ------------------------------------------
+
+.modal-body {
+  font-family: 'Open Sans Condensed Light', sans-serif;
+}
+
+.modal-footer {
+  background-color: #EEE;
+  border-radius: 6px;
+}
+
+.form-horizontal { 
+  LABEL, SELECT { text-transform: capitalize;  }
+  LABEL, SELECT, .nav-tabs { font-family: 'Open Sans Condensed', sans-serif; } 
+  INPUT[type=number], SELECT { width: 50%; }
+}
+
+// ------------------------------------------
+//  LAYOUT
+// ------------------------------------------
+
+HTML, BODY, #layout, #sidebar, #content, #live{ height: 100%; }
+
+#layout {
+  margin: 0px;
+  background: linear-gradient(135deg, #ffffff 13%,#e6dec5 66%);
+}
+
+@sarah-sidebar-text: #636363;
+#sidebar {
+  overflow-y: auto;
+  color: @sarah-sidebar-text;
+  background: @sarah-black;
+  padding: 0;
+  
+  H2 { text-align: center; }
+  .split { 
+    margin: 20px 0px; 
+    .glyphicon { font-size: 150%; }
+    &:last-child { display: none; }
+  }
+  .nav LI {
+    font-size: 120%;
+	  A { 
+	    color: @sarah-sidebar-text;
+	    font-weight: bold;
+	    border-radius: 0;
+	  }
+	  
+	  A:hover,
+    &.active A { 
+      color: #FFFFFF;
+      background-color: #222222;
+    }
+  }
+}
+
+#content { 
+  padding: 0; 
+	.wrapper {
+	  padding: 0px 3% 3% 3%;
+	  overflow-y: scroll; height: 100%;
+	}
+  H1 { color:  #BCB2AB; margin: 3% 0px; }
+}
+
+#live {
+  padding: 0; 
+  color: #8F8F8F;
+  background: #F6F6F6;
+  
+  H2 {
+    margin: 0; padding: 10px;
+    font-size: 20px;
+    color: #FFFFFF;
+    background-color: #BBB;
+  }
+  
+  #headline-logo {
+    padding: 20px;
+    border-bottom: 2px solid @sarah-orange;
+    IMG { width: 100%; }
+  }
+  
+  .news {
+    IMG { width: 100%; }
+    H3 { margin: 0px 0px 5px 0px; }
+    padding: 20px 20px 0px 20px;
+  }
+}

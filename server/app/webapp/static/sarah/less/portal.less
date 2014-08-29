@@ -1,0 +1,70 @@
+@import "mixins.less";
+@sarah-portal-gutter: 20px;
+
+.portlet-grid (@index) when (@index > 0) {
+  .portlet-grid(@index - 1);
+  
+  @width:  160px * @index + @gutter * @index - @gutter;
+  @height: 120px * @index + @gutter * @index - @gutter;
+  @gutter: @sarah-portal-gutter;
+  
+  &.grid-w@{index}{ width:   @width; }
+  &.grid-h@{index}{ height:  @height; .portlet-body { height: @height - 30px - 35px; }}
+}
+
+.portal {
+    
+  .portlet {
+    color: @sarah-gray-text;
+    font-family: 'Open Sans Condensed', sans-serif;
+    background: #FFFFFF;
+    
+    border-radius: 2px;
+    border-bottom: 2px solid @sarah-blue-border;
+    box-shadow: 1px 1px 4px 0px #959595;
+    
+    .portlet-header {
+      position: relative;
+      padding: 5px; 
+      height: 30px;
+      
+      color: #FFFFFF;
+      background: @sarah-blue; 
+      border-radius: 2px 2px 0px 0px;
+      H3 { 
+        font-size: 16px; line-height: 20px;
+        text-transform: capitalize; 
+        margin: 0px;
+      }
+    }
+    
+    .portlet-body {
+      font-family: 'Open Sans Condensed Light', sans-serif;
+      padding: 5px;
+      overflow-y: auto;
+    }
+    
+    .portlet-footer {
+      font-family: 'Open Sans Condensed Light', sans-serif;
+      height: 35px;
+      padding: 5px;
+      .btn { font-size: 14px; }
+    }
+  }
+}
+
+.portlet {
+  width:  160px;  height: 120px;
+  .portlet-grid(9);
+}
+
+.portlet {
+  &.blue   { border-bottom-color: @sarah-blue-border;   .portlet-header{ background: @sarah-blue  ; }}
+  &.red    { border-bottom-color: @sarah-red-border;    .portlet-header{ background: @sarah-red   ; }}
+  &.orange { border-bottom-color: @sarah-orange-border; .portlet-header{ background: @sarah-orange; }}
+  &.green  { border-bottom-color: @sarah-green-border;  .portlet-header{ background: @sarah-green ; }}
+  &.yellow { border-bottom-color: @sarah-yellow-border; .portlet-header{ background: @sarah-yellow; }}
+  &.brown  { border-bottom-color: @sarah-brown-border;  .portlet-header{ background: @sarah-brown ; }}
+  &.pink   { border-bottom-color: @sarah-pink-border;   .portlet-header{ background: @sarah-pink  ; }}
+  &.black  { border-bottom-color: @sarah-black-border;  .portlet-header{ background: @sarah-black ; }}
+}

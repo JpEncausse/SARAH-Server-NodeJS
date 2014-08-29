@@ -1,0 +1,590 @@
+﻿v4.0.0 - ??/??/2014
+=================
+
+- [X] SERVER: FULL Rewrite of core JS
+- [X] SERVER: NodeJS: upgrade to 0.10.30
+- [X] SERVER: ExpressJS: upgrade to 4.8.3 + dependencies
+- [X] SERVER: PhantomJS: upgrade to 1.9.7
+- [X] SERVER: Reorganise all folders into : client / server / plugins
+- [X] SERVER: All common libraries are now in server/app/node_modules
+- [X] SERVER: log(), info(), warn(), error() are global functions
+- [X] SERVER: SARAH, Config are global variable 
+- [X] SERVER: Add support to LESS
+- [X] SERVER: Upgrade to Bootstrap  3.2.0
+- [X] SERVER: Replace Gridster by Packery 1.2.3
+- [X] SERVER: Remove card flipping (messed up with IE, lots of HTML, not accessible)
+- [X] SERVER: Add new i18n library for core and plugins !
+- [X] SERVER: Plugins with key disabled are skipped
+- [X] SERVER: New Modal feature
+- [X] SERVER: New Ajax feature (refresh of portlets)
+- [X] SERVER: Add timeout for call(plugin)
+- [X] SERVER: Link to Community: http://community.sarah.encausse.net
+- [X] SERVER: Link to Wiki: http://wiki.sarah.encausse.net
+- [X] SERVER: Link to Issues: http://issues.sarah.encausse.net
+- [X] SERVER: Link to Ideas: http://ideas.sarah.encausse.net
+- [X] SERVER: Portal no more display phantoms portlet
+- [X] SERVER: Add new feature asknext to speak ruleid example
+- [X] SERVER: Allow proxy for HTTP request
+- [X] SERVER: Profile is now a JSON Object attach to the server and global
+
+- [X] CLIENT: FULL Rewrite of core C#
+- [X] CLIENT: New AddOn framework
+- [X] CLIENT: Speech: Add repeat 0-1 o SARAH <Item>
+- [X] CLIENT: Speech: Optional SARAH if user is engaged  
+- [X] CLIENT: Speech: Update full XML of a Grammar 
+- [X] CLIENT: Speech: AskNext: TTS a ruleId <example> 
+- [X] CLIENT: Picture: no longer return  "image/jpeg" file
+
+v3.1.5 - 18/05/2014
+=================
+
+- [X] WSRMacro: Fix Google API v2
+- [X] WSRMacro: Pull request fix speakers
+- [X] NodeJS: Web: Expose response in templates
+- [X] NodeJS: Web: Add no scale meta header
+- [X] NodeJS: New: Add first steps to 'learn' what user do (in memory) and in RuleEngine
+- [X] NodeJS: New: Move generic answer in core/config with SARAH.answer()
+- [X] NodeJS: Remove control on speech async
+- [X] NodeJS: Improve AskMe with wildcard, async, etc ...
+- [X] NodeJS: Add getProfile(name) 
+- [X] NodeJS: Library: add "collections"
+- [X] NodeJS: Add bot version: config.bot.version
+- [X] Plugin: chatterbot: rewrite and clean to use askme (experimental)
+- [X] Plugin: LIFX
+
+v3.1.4 01/01/2014
+=================
+
+- [X] Marketplace
+- [X] Plugin: HUE (fix)
+- [X] Plugin: Meteo (fix)
+- [X] Plugin: Chambre
+- [X] WSRMacro: Add culture to Speech properties 
+
+v3.1.2 - 01/12/2013
+=================
+
+- [X] WSRNodeJS: Fix AskMe when no answer
+- [X] WSRMacro: Stack speak()
+- [X] Plugin: Merci (Julien LOISEAU)
+- [X] Plugin: spotifyonsqueez (Darkjeff)
+- [X] Plugin: SamsungRemote (Alamata)
+- [X] Plugin: AVRRemote (Alamata)
+- [X] Plugin: ProgTV2 (Vincent Legavre)
+- [X] Plugin: Interface (Alamata)
+- [X] Plugin: iPhone Finder (Franck Wehrlé) 
+- [X] Plugin: Push (Franck Wehrlé) 
+- [X] Plugin: SARAH Firebase (Olivier DM)
+- [X] Plugin: VM201 (Jean-Luc NAPOLITANO)
+
+v3.1.1 -27/11/2013
+=================
+
+- [X] WSRNodeJS: Fix AskMe (see doc)
+- [X] WSRNodeJS: Fix speak() even from browser
+- [X] WSRNodeJS: Allow askme without tts
+- [-] WSRNodeJS: Bug rule copy
+
+v3.1 -20/11/2013
+=================
+
+- [X] Doc: Wiki > FAQ
+- [X] Doc: Download statistics
+- [X] Doc: 15/11/2013 SARAH Meetup #1
+- [X] Doc: 13/11/2013 SARAH Paris Machine Learning
+- [X] Doc: 06/11/2013 SARAH Paris Hacker
+- [X] WSRNodeJS: Chromeless Webkit + Webpages
+- [X] WSRNodeJS: Publish/Subscribe Event mechanism
+- [X] WSRNodeJS: Little Askme
+- [X] WSRNodeJS: Hook for SARAH speech
+- [X] WSRNodeJS: Common answers
+- [X] WSRNodeJS: expose plugin list
+- [X] WSRNodeJS: print StackTrace
+- [X] WSRNodeJS: Hook for Motion/StandBy mode
+- [X] WSRNodeJS: Fix media print css
+- [X] WSRNodeJS: Push AskMe order
+- [X] WSRMacro: Introducing client id send with each request
+- [X] WSRMacro: RecognizeString "emulate" return the text to speak
+- [X] WSRMacro: Print Audio # Output
+- [X] WSRMacro: Fix multiple Audio concurency
+- [X] WSRMacro: Fix 'dictation' parameter
+- [X] WSRMacro: XML TTS attribute is synchronous
+- [X] WSRMacro: Fix wav reader / player
+- [X] WSRMacro: MP3 / WAV sync or async
+- [X] WSRMacro: MP3 timeout up to 8 minutes
+- [X] Plugin: Cocktail (Fabrice B)
+- [X] Plugin: Tellstick (Olivius DM)
+- [X] Plugin: Face_log_me (Partouche Michael)
+- [X] Plugin: Zipabox (Frédéric P.)
+- [X] Plugin: Blague V2 (Neil Fleming)
+- [X] Plugin: Zoe
+- [X] Plugin: Veralite (Siegfried Wittling)
+- [X] Plugin: Domoticz (Michel Rere)
+- [X] Plugin: dictionary call wikipedia (can't use DuckDuckGo)
+- [X] Plugin: werewolf fix layout with botostrap 3
+- [X] Plugin: youtube (Alexis BARRY)
+- [X] Plugin: livebox (Ferreira Agostinho)
+- [X] Plugin: meteoalerte (Ferreira Agostinho)
+- [X] Plugin: roomba2 (Alban Vidal-Naquet)
+- [X] Plugin: AutoGainControl (Alban Vidal-Naquet)
+- [X] Plugin: PulseEight (Alban Vidal-Naquet)
+- [X] Plugin: Chifoumi (Alban Vidal-Naquet)
+- [X] Plugin: chuck, excuse, proverbe (RémiB:  https://github.com/Golgfag/Sarah)
+
+
+v3.0 - 18/10/2013
+=================
+
+- [X] Doc: Concours Halloween
+- [X] Doc: Concours Blink
+- [X] Doc: Shopping Tee-Shirt
+- [X] Doc: ParisWeb 2013
+- [X] Doc: SARAH WorldWide
+- [X] Doc: New Tee-Shirt !
+- [X] Doc: Plugin with request (demo5) 
+- [X] Doc: Using RTP server
+- [X] Doc: Wiki v3.0 on Github 
+- [X] Doc: Vidéo 1 year later !
+- [X] Doc: Jarvis Rainmeter GUI thanks Xnorky
+- [X] WSRNodeJS: Link to Community Map
+- [X] WSRNodeJS: Fix reload plugin bug
+- [-] WSRNodeJS: Fix zip bug
+- [X] WSRNodeJS: Bootstrap 3
+- [X] WSRNodeJS: Do not throw Error on multiple callback({});
+- [X] WSRNodeJS: Handle profile on server side
+- [-] WSRNodeJS: HTML5 Mobile Speech iOS: Too many bug...
+- [X] WSRMacro: HTTPRequest is speaking ?
+- [X] WSRMacro: Profiling methods
+- [X] WSRMacro: Replace [name] in TTS by the user name
+- [X] WSRMacro: Recognize from String
+- [X] WSRMacro: Handle all output speakers
+- [X] WSRMacro: Handle all input Kinect sensor
+- [X] WSRMacro: Rewrite all feature intoTtasks
+- [X] WSRMacro: Task: Color prominent
+- [X] WSRMacro: Task: Motion detection
+- [X] WSRMacro: Task: Compute height
+- [X] WSRMacro: Task: Compute X, Y, Z head
+- [X] WSRMacro: StandBy mode (with motion detection)
+- [X] WSRMacro: Rewrite WSRCamera for each Kinect Sensor
+- [X] WSRMacro: GreenScreen: smooth depth stream
+- [X] WSRMacro: Gesture: Track wrong skeleton
+- [X] WSRMacro: Face: keep track of people seen
+- [X] WSRMacro: Task: Face Tracking
+- [X] WSRMacro: Remove or change logs path
+- [X] WSRmacro: Set speaker volume and TTS volume (KO pour le level)
+- [X] WSRMacro: Fix bug storing too many context
+- [X] WSRMacro: Reload only changed file (prevent multiple reload)
+- [X] WSRMacro: Handle profiles
+- [X] WSRMacro: Add speech/play timeout of 120s
+- [X] WSRMacro: Timeout on played audio / tts
+- [X] Plugin: LeapMotion
+- [X] Plugin: Hue
+- [X] Plugin: Deezer (Vincent Studer)
+- [X] Plugin: XBMC 1.5 (Jérôme VEYRET)
+- [X] Plugin: Sourates (Samir SEMAI)
+- [X] Plugin: Salam (Samir SEMAI)
+- [X] Plugin: Arret (Samir SEMAI)
+- [X] Plugin: WOK (Emilien Degert)
+- [X] Plugin: Askme (Jérôme VEYRET)
+- [X] Plugin: Vivotek (Eddy TELLIER)
+- [X] Plugin: Netatmo (Arnaud Ruiz)
+- [X] Plugin: GoogleTraffic (Baptiste Marienval)
+- [X] Plugin: SMS (Mad Rippeur)
+- [X] Plugin: FreeboxOS (Baptiste Marienval)
+- [X] Plugin: Arduin Ethernet (Ambroise PELLISSIER)
+- [X] Plugin: STIB (Neil Fleming)
+- [X] Plugin: Repeat (Black3v3r)
+- [X] Plugin: vlille (Corentin Azelart)
+- [X] Plugin: progtv (Vincent Fresnel)
+- [X] Plugin: Run Stop (Irhon Dril)
+- [X] Plugin: Heatmiser (Mad Rippeur)
+- [X] Android App for SARAH (thanks to Baptiste Marienval) 
+- [X] SARAH server on Raspberry Pi (thanks to Jérémy HOCDÉ)
+
+
+v2.9 - 30/06/2013
+=================
+
+- Reco vocale => 2%   (-/+0%)
+- Take picture => +0% (-/+0%)
+- QRCode (6) => +8%  (-/+0%)
+- Websocket => +7% passif + 11% actif  (-/+0%)
+- Reco faciale => +2% actif/passif (-/+0%)
+- Gesture => +9% actif/passif (Juste le stream +4% donc +5% code)
+- Gesture + WebSocket => +28% en actif !?
+
+- 7-8% Stand Alone
+- 35% Sans Reco Faciale
+- 43% Avec Reco Faciale
+
+== RC5 ==
+- [X] Restart for a given timeout
+- [X] NodeJS version
+- [X] Add parameter Listen true/false in request/xml
+
+== RC4 ==
+- [X] BUG: Warn on properties
+- [X] BUG: Try/Catch on Kinect + Logs
+- [X] BUG: Fix IE9+ (gracefull degradation)
+- [X] BUG: Fix HTML5
+
+- [X] Plugin: Omenex (Olivier Dupont)
+- [X] Plugin: Meteo2 (Vincent Legavre)
+
+== RC3-2 ==
+- [X] BUG Container color
+- [X] RFE Log2Console
+- [X] BUG Test with RTP Server
+
+- [X] Plugin: Devise (Nicolas Savoini)
+- [X] Plugin: Roomba 2.0  (Alain Chiorboli)
+
+== RC1 ==
+
+- [X] BUG PhantomJS vs Winston
+- [X] BUG: Installing plugin from GitHub sometimes fails
+- [X] BUG: Msg NodeJS on Startup
+- [ ] BUG: closing app take 60s
+
+== RC1 ==
+- [X] Doc: SARAH gagne quelques Neurones
+- [X] Doc: SARAH: modules avanc�s
+- [X] Doc: Microphone pour The Voice
+- [X] Doc: Test some voices
+- [X] Doc: SARAH: une communaut� active !
+- [X] Doc: Comment publier ses plugins dans l�AppStore ?
+- [X] Doc: Vid�o Pas Sage en Seine
+- [X] Logo by Olivier Guiard
+- [X] Avatar by Ded Koder thanks too HotfireNet
+- [X] WSRNodeJS: Catch all exception
+- [X] WSRNodeJS: Winston Logs
+- [X] WSRNodeJS: SARAH.call avec un callback et sans dispatch
+- [X] WSRNodeJS: xml2js
+- [X] WSRNodeJS: speak() sync / async
+- [X] WSRNodeJS: notts parameter / attribute
+- [X] WSRNodeJS: exports.init = function (SARAH){} // module only
+- [X] WSRNodeJS: handle plugin not found 'hang'
+- [X] WSRNodeJS: clean custom.prop with declared fields
+- [X] WSRNodeJS: automatic reload modified .js
+- [X] WSRNodeJS: Portal: Gridster
+- [X] WSRNodeJS: Portal: Chooser width/height/x/y
+- [X] WSRNodeJS: Portal: Flipping front/back
+- [X] WSRNodeJS: Portal: portlet.html / portlet_back.html
+- [X] WSRNodeJS: Portal: A.ajax and Form.ajax submitted in ajax
+- [X] WSRNodeJS: Store: Show plugins stats
+- [X] WSRNodeJS: Store: Download master github trunk
+- [X] WSRNodeJS: Store: Fix zip CRC Error from github
+- [X] WSRNodeJS: SARAH.runApp() use parameter 2 for params
+- [X] WSRNodeJS: Log request duration
+- [X] WSRMacro: No ColorStream if not required
+- [X] WSRMacro: Google Speech language
+- [X] WSRMacro: pre-check rule language and ignore (time_en_US.xml)
+- [X] WSRMacro: Reloading XML do not reset the context
+- [X] WSRMacro: Fix lazy declaration (rule OR fileName)
+- [X] WSRMacro: Log request duration
+- [X] WSRMacro: ShutUp();
+- [X] WSRMacro: wav or wma
+- [X] WSRMacro: Replacing Sentinel by Log2Console
+- [X] WSRMacro: Refactoring SpeechRecognitionEngine
+- [X] WSRMacro: UTP SpeechRecognitionEngine (experimental)
+- [X] Plugin: Calendar 2.0
+- [X] Plugin: Freebox 2.0
+- [X] Plugin: HomeCenter 2 (Vincent Fresnel)
+- [X] Plugin: calendar (where in title) 
+- [X] Plugin: Volume (Guigui Abloc)
+- [X] Plugin: Babysiter (Vincent F)
+- [X] Plugin: Parle (Hotfirenet)
+- [X] Plugin: Translate
+- [X] Plugin: Minuteur (Olivier St�phane)
+- [X] Plugin: Bonjour (Alexis BARRY)
+- [X] Plugin: Mail 2.0
+- [X] Plugin: XBMC 1.4 (J�r�me VEYRET)
+- [X] Plugin: GoogleTraffic (Baptiste Marienval)
+- [X] Plugin: Blink(1)
+- [X] Plugin: Pebble
+- [X] Plugin: Calcul (Beno�t GUILLAUME)
+- [X] Plugin: Tvneufbox (Amaury du)
+- [X] Plugin: Control (Alexis BARRY)
+- [X] Plugin: VDM (Maxime Hermouet)
+- [X] Plugin: byebye (Hotfirenet)
+- [X] Plugin: TvPhilips (Thomas Pinaud)
+- [X] Plugin: DateConviviale (Olivier Dupont)
+- [X] Plugin: Squeezebox (Vincent Fresnel)
+- [X] Plugin: Roomba (Alain Chiorboli)
+- [X] Plugin: Horoscope (Baptiste Marienval)
+- [X] Plugin: SSH (Mad Rippeur)
+
+
+v2.8 - 14/05/2013
+=================
+
+- [X] Marketing: DevoxxFR
+- [X] Marketing: ParisJS
+- [X] Marketing: Interview TLD
+- [X] Doc: Getting Started, Demo1, Demo2, Demo3, Demo4, Wikipedia
+- [X] Doc: Context / Persisted data
+- [X] WSRNodeJS: Karotz Java version
+- [X] WSRNodeJS: PhantomJS path for Ubuntu
+- [X] WSRNodeJS: Add library cheerio
+- [X] WSRNodeJS: Variable SARAH dans CRON
+- [X] WSRNodeJS: Edit JS from Web
+- [X] WSRNodeJS: Fix bug with typed text
+- [X] WSRNodeJS: SARAH.last(res) run last command
+- [X] WSRNodeJS: SARAH.exists(cmd) check if module exists
+- [X] WSRNodeJS: Custom before/after rule/filter
+- [X] WSRNodeJS: Do no longer show version
+- [X] WSRMacro: Hot replace SARAH <=> JARVIS...
+- [X] WSRMacro: Watch directory audio file
+- [X] WSRMacro: HTTP GET handle relative audio file
+- [X] WSRMacro: HTTP POST audio file
+- [X] WSRMacro: try/catch on bad grammar
+- [X] WSRMacro: try/catch Network Error
+- [X] WSRMacro: option for seated gesture
+- [X] WSRMacro: Play/Stop WAV
+- [X] WSRMacro: Fix bug QS params in attribute URI
+- [X] WSRMacro: Send confidence parameter in all recognition
+- [X] WSRMacro: Timeout (60s) to set default context
+- [X] Plugin: ChatterBot 2.0 (RiverScript)
+- [X] Plugin: Dictionary 2.0 with cheerio
+- [X] Plugin: Meteo 2.0 with cheerio
+- [X] Plugin: Allocine 2.0 with cheerio (movie.js)
+- [X] Plugin: TV Samsung
+- [X] Plugin: Simsimi (Johnny Baillargeaux)
+- [X] Plugin: Izipedia (Johnny Baillargeaux)
+- [X] Plugin: Infotraffic (Loic LUCAS)
+- [X] Plugin: XBMC (Jerome VEYRET)
+
+
+v2.7 - 12/03/2013
+=================
+
+- [X] Add debug option (set to false)
+- [X] If debug is true then do not cache plugins
+- [X] PhantomJS: use spawn() instead of exec()
+- [X] WSRMacro: Fix bug with Keyboard modifier ""
+- [X] WSRMacro: Fix bug with Gesture on Y axis
+- [X] WSRMacro: Fix bug with Gesture double match
+- [X] WSRMacro: Improve Gesture complexe before simple
+- [X] WSRMacro: Green Screen + Hologram
+- [X] WSRNodeJS: Windows 8 HomeScreen
+- [X] WSRNodeJS: Disable rules (flag)
+- [X] Encausse.net: Live plugin list
+- [X] Add dl parameter to download plugins and have stats
+
+
+v2.6.4 - 12/02/2013
+=================
+
+- [X] NodeJS: When NodeJS Crash call callback({})
+- [X] WSRMacro: Multiple Face detection vs Plugin Face
+- [X] WSRMacro: Trainning vs white spaces
+
+
+v2.6.3 - 10/02/2013
+=================
+
+- [X] WSRMacro: Use Multithreading for QRCode, and Facial Recignition
+- [X] WSRMacro: Add an option for Terminator mode
+- [X] WSRMacro: Clean options in .ini
+
+v2.6.2 - 09/02/2013
+=================
+
+- [X] WSRMacro: Add missing InputSimulator.dll
+- [X] WSRMacro: Add parameter to perform Face Recognition
+
+v2.6.1 - 08/02/2013
+=================
+
+- [X] WSRMacro: Add an option to select voice
+
+v2.6 - 08/02/2013
+=================
+
+- [X] Slides and presentation of SARAH
+- [X] WSRMacro: Move to SystemTray
+- [X] WSRMacro: UseNLogs for logs
+- [X] WSRMacro: Rotate logs per days
+- [X] WSRMacro: Open Sentinel from SystemTray
+- [X] WSRMacro: -language "fr-FR"
+- [X] WSRMacro: Complete class refactoring
+- [X] WSRMacro: New Window displaying color frame
+- [X] WSRMacro: Face detection using EmguCV
+- [X] WSRMacro: Face recognition using EmguCV
+- [X] WSRMacro: Option for "AdaptationOn" => Off
+- [X] WSRMacro: .ini configuration file
+- [X] WSRMacro: New Kitt and Jarvis media sound
+- [X] NodeJS: Move custom.prop on / with custom.ini
+- [X] NodeJS: Plugin Face Recognition to train, start, stop
+- [X] WSRMacro: Stop/Start gesture (like face recognition)
+- [X] NodeJS: Plugin Gesture to start, stop
+- [X] WSRMacro: Keyboard features + run .exe
+- [X] WSRMacro: Dict�e avec Google Speech (see dictionary))
+
+
+v2.5 - 06/01/2013
+=================
+
+- [X] Use Microsoft.Speech API for Optimized version
+- [X] Check also "lazy" in file path
+
+v2.4 - 19/12/2012
+=================
+
+- [X] WebSite: Fix modal (calendar) CRON & Modules
+- [X] Plugin: Calendar: Fix recurrent events 
+- [X] Doc: Architecture: Plugin / Framework
+- [X] Move Karotz.exe and dll into plugin
+- [X] WSRMacro: Confidence on SARAH
+- [X] WSRMacro: debug dump audio
+- [X] WSRMacro: Async speech to work with Loquendo
+- [X] Plugin: Gesture
+- [X] Plugin: WebSocket + Bookmarklet + Slides
+
+
+v2.3 - 02/12/2012
+=================
+
+- [X] WSRNodeJS: Completly rewrite code to reoganise in Manager
+- [X] WSRNodeJS: Rule mecanism like IFTTT
+- [X] WebSite: Add popover for store
+- [X] WebSite: Add remote message
+- [X] WebSite: Display changelogs
+- [X] Plugin: Fix Train and Zibase plugins (version)
+- [X] Plugin: Fix missing cron script declared in properties
+- [X] Plugin: Put VLC plugin online
+- [X] Plugin: new Commands plugin
+- [X] Plugin: new Pushover plugin
+- [X] Plugin: new RSS plugin
+- [X] Plugin: improve mail plugin
+- [X] Blog: Improve project description with 2.3 features
+
+
+v2.2 - 18/11/2012
+=================
+
+- [X] SARAH survey
+- [X] Article on SARAH Survey
+- [X] Move all script into plugins
+   [X] Migration: CRON: no script file
+   [X] Migration: CRON: rename cronlendar to calendar
+   [X] Fix Movie rewriting and hangs
+   [X]Rename to PhotoFrame
+- [X] WSRKinect: Improve dication to search <garbage> with Google Speech
+- [X] Plugin Dictionary: Sarah recherche ... sur Wikipedia
+- [X] Plugin Store
+
+v2.1 - 11/11/2012
+=================
+
+- [X] FAQ: Split: WSRMacro / WSRNodeJS
+- [X] WSRKinect: Pause MP3
+- [X] WSRKinect: HttpServer: pause > play > tts
+- [X] WSRKinect: HttpServer: bug UTF-8 params
+- [X] WSRKinect: Sound effect for QRCode
+- [X] WSRNodeJS: Provides manager to plugins
+- [X] WSRNodeJS: Mail framework
+- [X] WSRNodeJS: HTML Pages for Plugins
+- [X] Plugin: Werewolf
+- [X] Folder: community with plugins
+- [X] Community: Plugin Train
+- [X] Community: Plugin FreeBox
+- [X] Community: Plugin Zibase
+
+v2.0 - 06/11/2012
+=================
+
+- [X] WSRMacro: Do not Enable lazyRule in defaultContext
+- [X] WSRMacro: Sample ChatterBot / Context
+- [X] WSRMacro: XML Attributes: Play MP3 (local or http)
+- [X] WSRMacro: HttpServer: Play MP3 (local or http)
+- [X] WSRMacro: HttpServer: Set context
+- [X] WSRMacro: Reorganize hooks (XML attributes, HttpServer)
+- [X] WSRKinect: Run QRCode codes
+- [X] WSRKinect: HttpServer: Take pictures (and return jpeg)
+- [X] WSRKinect: XML Attributes: Take pictures
+- [X] WSRNodeJS: Improve the upload script
+- [X] WSRMacro: New media folder with joshua.mp3
+- [X] WSRKinect: Serveur WebSocket + hidden page /kinect
+
+v1.9 - 28/10/2012
+=================
+
+- [X] WSRMacro: improve start/stop sensor
+- [X] KarotzNet: Use NDesk.OptionSet to parse arguments
+- [X] Karotz: Add option for a custom timeout
+- [X] WSRMacro: add flag to enable gesture
+- [X] WSRMacro: add flag for default context
+- [X] WSRMacro: add support to grammar context
+- [X] WSRMacro: Init a light HTTP Server (nHttp)
+- [X] WSRNode: Try to delegate speech to WSRMacro
+- [X] WSRNode: Handle self request
+- [X] Calendar.js: Match calendar even 5min after start to avoid overlap
+- [X] Calendar.js: Run HTTP Request of Event's where field
+- [X] Eedomus.js: Multiple answers defined in properties
+- [X] Macros: Set a weight of 2 on "Sarah"
+
+v1.8 - 08/10/2012
+=================
+
+- [x] Add sample script for Vera Lite
+- [x] New gesture grammar for Kinect
+- [x] Shorcut to http://127.0.0.1:8080
+- [x] Use NodeJS 32Bits instead of 64Bits
+
+v1.7.1 - 04/10/2012
+=================
+
+- [x] Fix JS bug module instead of modules
+- [x] Fix Karotz upload bug
+
+v1.7 - 04/10/2012
+=================
+
+- [X] Rewriting WSRMacro with common code
+- [X] Parsing options with NDesk.Options
+- [X] Embeded Kinect DLL to avoid conflicts
+- [X] Improve Log's Console
+- [X] Multiple recognition + prevent listening while speaking
+- [X] Synchronous grammar loading
+
+v1.6 - 23/09/2012
+=================
+- [x] Load/Save properties from custom.prop + fix output
+- [x] Add plugins directory
+- [x] Load/Save properties from plugin's directory
+- [x] Load script/phantom from plugin's directory before core
+- [x] Merge phantom's option with config
+- [x] Handle multiple directories WSRKinect
+- [x] Release 2 WSRKinect and WSRMicro
+
+v1.5 - 20/09/2012
+=================
+
+- [x] Rewite NodeJS server witb ExpressJS
+- [x] Add website build on Bootstrap w/ EJS
+- [x] Configure NodeJS properties online
+- [x] Add Try/Catch on properties loading
+
+v1.4 - 17/09/2012
+=================
+
+- [x] Improve logs and add default properties
+
+v1.3 - 16/09/2012
+=================
+
+- [x] movies.js: Improve regexp of days
+- [x] Improve phantomJS API
+- [x] Add support to meteo.js (http://encausse.wordpress.com/2012/09/15/tutoriel-ajout-de-la-meteo-dans-sarah/)
+
+v1.2 - 15/09/2012
+=================
+
+- [x] Add a parameter to WSRMacro.exe to set Confidence
+
+v1.1 - 14/09/2012
+=================
+
+- [x] Add a parameter to WSRMacro.exe to set NodeJS' IP Address
+- [x] Use a batch file to call WSRMacro.exe 

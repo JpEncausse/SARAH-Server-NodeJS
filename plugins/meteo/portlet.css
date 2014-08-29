@@ -1,0 +1,36 @@
+
+.plugin-gridster.meteo H3 {
+  margin-top: -10px;
+}
+
+.plugin-gridster.meteo .logo,
+.plugin-gridster.meteo .text {
+  height: 100%;
+  position: absolute;
+  top: 0;
+}
+
+.plugin-gridster.meteo .logo {
+  background: #33A3EC;
+  left: 0; width: 35%; 
+}
+
+.plugin-gridster.meteo .logo .ajax {
+  display: block;
+  margin: 30px auto;
+  text-align: center;
+}
+
+.plugin-gridster.meteo .text {
+  background: #FFFFFF;
+  right: 0; width: 65%; 
+  text-align: center;
+}
+.plugin-gridster.meteo .text .temp {
+  font-size: 40px; line-height: 42px;
+  font-weight: bold;
+}
+
+.plugin-gridster.meteo .text .city {
+  font-size: 28px; line-height: 30px;
+}

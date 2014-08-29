@@ -1,0 +1,8 @@
+{
+  "modules" : { 
+    "time"  : {
+      "description": "Donne l'heure",
+      "version": "1.0"
+    }
+  }
+}

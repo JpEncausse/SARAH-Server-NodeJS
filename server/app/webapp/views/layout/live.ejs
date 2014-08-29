@@ -1,0 +1,23 @@
+<h2><%- i18n('nav.live') -%></h2>
+      
+<div class="text-center" id="headline-logo"><img src="/sarah/assets/headline-logo.png"></div>
+
+<div class="news">      
+	<div id="ticker"><%- SARAH.PortalManager.refreshTicker() -%></div>
+</div>
+
+<div class="news">  
+	<h3>Encausse.net <span class="glyphicon glyphicon-export"></span></h3>
+	<ul id="news" class="list-unstyled">
+		<% 
+		var feed = SARAH.PortalManager.refreshRSSNews();
+		for(var i = 0 ; feed && i < 6 && i < feed.items.length ; i++){
+		  var item = feed.items[i];
+		%>
+		<li>
+		  <span class='glyphicon glyphicon-record'></span>
+		  <a href="<%= item.link %>"><%= item.title %></a>
+		</li>
+		<% } %>
+	</ul>
+</div>

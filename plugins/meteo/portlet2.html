@@ -1,0 +1,15 @@
+<% stylesheet('assets/'+key+'/portlet.css') %>
+<% 
+  var meteo = SARAH.ConfigManager.getModule(key); 
+  var last  = meteo.last(); 
+  var sun = last.sun ? last.sun.trim().replace(/[\s']+/g, '_').replace(/[éè]/g, 'e') : 'undefined';
+%>
+
+<div class="logo">
+  <a href="sarah/meteo" class="ajax"><img src="assets/meteo/climacons/<%= sun %>.png"></a>
+</div>
+<div class="text">
+  <br/>
+  <br/><span class="temp"><%= last.temp %></span>
+  <br/><span class="city"><%= last.place %></span>
+</div>

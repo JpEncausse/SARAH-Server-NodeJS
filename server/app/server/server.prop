@@ -1,0 +1,21 @@
+{
+  "bot"  : {  
+    "name"      : "S.A.R.A.H." ,
+    "tagline"   : "Self Actuated Residential Automated Habitat",
+    "answers"   : "Oui|Je m'en occupe|Voilà|C'est fait"
+  },
+  
+  "http" : {
+    "port"      : 8080,
+    "ip"        : "127.0.0.1",
+    "upload"    : "E:\\Dropbox\\Public\\[FIXME]\\",
+    "remote"    : "http://127.0.0.1:8888/",
+    "timeout"   : 4000,
+    "proxy"     : false,
+    "phantom"   : ""
+  },
+  
+  "phantoms" : { },
+  "cron"     : { },
+  "modules"  : { }
+}

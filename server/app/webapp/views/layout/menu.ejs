@@ -1,0 +1,10 @@
+<!-- Dropdown Menu -->
+<button type="button" class="btn btn-default btn-sm" id="mnuNav" data-toggle="dropdown">
+  <span class="glyphicon glyphicon-th-list"></span>
+</button>
+<ul class="dropdown-menu" role="menu" aria-labelledby="mnuNav">
+  <li role="presentation"><a role="menuitem" tabindex="-1" href="/portal" ><%- i18n('nav.home') -%></a></li>
+<% for (var i = 0; i < items.length; i++) { %>
+  <li role="presentation" <%- items[i].active ? "class='active'" : "" -%>><a role="menuitem" tabindex="-1" href="<%- items[i].url -%>" ><%- i18n(items[i].name) -%></a></li>
+<% } %>
+</ul>

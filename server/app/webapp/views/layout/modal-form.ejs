@@ -1,0 +1,25 @@
+<div class="ajax-body">
+  <div class='modal-dialog modal-lg'>
+    <div class="modal-content">
+    <form class="form-horizontal" method="POST" action="<%- blocks.formUrl -%>" role="form" accept-charset="UTF-8" enctype="multipart/form-data">
+
+      <div class="modal-header">
+      <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+        <h4 class="modal-title" id="modalLabel"><%- title -%></h4>
+      </div>
+
+      <div class="modal-body">
+        <% if (message === true){ %><script>document.location = document.location;</script><%- i18n('modal.'+message) -%>
+        <% } else if (message) { %><div class="alert alert-info" role="alert"><%- i18n('modal.'+message) -%></div><% } %>
+        <%- body -%>
+      </div>
+      
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal"><%- i18n('modal.close') -%></button>
+        <button type="button" class="btn btn-primary" data-action="ajax"><%- i18n('modal.save') -%></button>
+      </div>
+      
+    </form>
+    </div>
+  </div>
+</div>

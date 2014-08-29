@@ -1,0 +1,74 @@
+<% layout('../layout/modal-form.ejs') -%>
+<%
+  var name = req.params.name;
+  var plugin = SARAH.PluginManager.find(name); 
+  block('formUrl', '/plugin/config/'+ name);
+%>
+
+  <p><%- i18n('modal.plugin.config.description') -%></p>
+	<ul class="nav nav-tabs" role="tablist">
+	  <li class="active"><a href="#plugin-config" role="tab" data-toggle="tab"><%- i18n('modal.plugin.config.plugin') -%></a></li>
+	  <% if (plugin.phantoms){ %>
+	  <li><a href="#plugin-phantoms" role="tab" data-toggle="tab"><%- i18n('modal.plugin.config.phantoms') -%></a></li>
+	  <% } %>
+	  <% if (plugin.cron){ %>
+	  <li><a href="#plugin-cron" role="tab" data-toggle="tab"><%- i18n('modal.plugin.config.cron') -%></a></li>
+	  <% } %>
+	  <li><a href="#plugin-portlet" role="tab" data-toggle="tab"><%- i18n('modal.plugin.config.portlet') -%></a></li>
+	</ul>
+	<p>&nbsp;</p>
+	
+	<!-- Tab panes -->
+	<div class="tab-content">
+	  <div class="tab-pane active" id="plugin-config">
+		  <% Object.keys(plugin.config).forEach(function(key){ %>
+		    <% var value = plugin.config[key]; %>
+		    <% if (key == 'x' || key == 'y' || key == 'w' || key == 'h' || key == 'c') return; %>
+		    <%- partial('config-field.ejs', { 'name' : name, 'prefix' : 'modules', 'key' : key, 'value' : value }) -%>
+		  <% }); %>
+	  </div>
+	  
+	  <% if (plugin.phantoms){ %>
+	  <div class="tab-pane" id="plugin-phantoms">
+      <% Object.keys(plugin.phantoms).forEach(function(key){ %>
+        <% var value = plugin.phantoms[key]; %>
+        <%- partial('config-field.ejs', { 'name' : name, 'prefix' : 'phantoms', 'key' : 'phantoms.'+key, 'value' : value }) -%>
+      <% }); %>
+	  </div>
+	  <% } %>
+	  
+	  <% if (plugin.cron){ %>
+	  <div class="tab-pane" id="plugin-cron">
+      <% Object.keys(plugin.cron).forEach(function(key){ %>
+        <% var value = plugin.cron[key]; %>
+        <%- partial('config-field.ejs', { 'name' : name, 'prefix' : 'cron', 'key' : key, 'value' : value }) -%>
+      <% }); %>
+	  </div>
+	  <% } %>
+	  
+	  <div class="tab-pane"        id="plugin-portlet">
+		  <%- partial('config-field.ejs', { 'name' : name, 'prefix' : 'modules', 'key' : 'x', 'value' : plugin.config.x }) -%>
+		  <%- partial('config-field.ejs', { 'name' : name, 'prefix' : 'modules', 'key' : 'y', 'value' : plugin.config.y }) -%>
+		  <%- partial('config-field.ejs', { 'name' : name, 'prefix' : 'modules', 'key' : 'w', 'value' : plugin.config.w }) -%>
+		  <%- partial('config-field.ejs', { 'name' : name, 'prefix' : 'modules', 'key' : 'h', 'value' : plugin.config.h }) -%>
+		  
+		  <% var key   = 'c'; %>
+		  <% var value = plugin.config.c; %>
+		  <div class="form-group">
+			  <label class="col-md-3 control-label"><%= i18n('plugin.'+name+'.'+key, i18n('plugin.'+key, key)) %></label>
+			  <div class="col-md-8">
+				  <select  name="modules.c" class="form-control">
+				    <option value="blue"    <%= value == 'blue'    ? 'selected' : '' %>>default</option>
+				    <option value="red"     <%= value == 'red'     ? 'selected' : '' %>>red</option>
+				    <option value="orange"  <%= value == 'orange'  ? 'selected' : '' %>>orange</option>
+				    <option value="green"   <%= value == 'green'   ? 'selected' : '' %>>green</option>
+				    <option value="yellow"  <%= value == 'yellow'  ? 'selected' : '' %>>yellow</option>
+				    <option value="brown"   <%= value == 'brown'   ? 'selected' : '' %>>brown</option>
+				    <option value="pink"    <%= value == 'pink'    ? 'selected' : '' %>>pink</option>
+				    <option value="black"   <%= value == 'black'   ? 'selected' : '' %>>black</option>
+				  </select>
+				</div>
+		  </div>
+		
+	  </div>
+	</div>

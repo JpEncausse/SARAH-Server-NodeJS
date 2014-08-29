@@ -1,0 +1,30 @@
+<% layout('page.ejs') -%>
+<% stylesheet('/sarah/less/layout.css') %>
+
+<div class="row" id="layout">
+	<div class="col-md-2 hidden-print hidden-xs hidden-sm" id="sidebar">
+	  <h2><script>document.write(moment().format("HH:mm"));</script></h2>
+  
+    <p class="split text-center">
+      <a href="/" class="btn btn-lg btn-danger"><%- i18n('nav.home') -%></a>
+      <br/><small><%- i18n('nav.version') -%> <%= Config.bot.version %></small>
+    </p>
+	  
+	  <% if (sidebar.nav)     { %><%- partial('sidebar.ejs', { items : sidebar.nav }) -%><% } %>
+    <% if (sidebar.links)   { %><%- partial('sidebar.ejs', { items : sidebar.links }) -%><% } %>
+	  
+	</div>
+	<div class="col-xs-12 col-sm-12 col-md-10 col-lg-8" id="content">
+	  <div class="wrapper">
+      <div style="position:relative; left: -20px; top: 5px;" class="pull-left hidden-lg hidden-md"><% if (sidebar.nav) { %><%- partial('menu.ejs', { items : sidebar.nav }) -%><% } %></div>
+	    <div style="position:absolute; right: 20px; top: 5px;">
+	      <a href="/lang/fr"><img src="/famfamfam/flags/fr.png" alt="fr"/></a>&nbsp;
+	      <a href="/lang/en"><img src="/famfamfam/flags/us.png" alt="en"/></a>
+	    </div>
+	    <%- body -%>
+	  </div>
+	</div>
+	<div class="col-md-2 hidden-print hidden-xs hidden-sm hidden-md" id="live">
+	  <%- partial('live.ejs') -%>
+	</div>
+</div>

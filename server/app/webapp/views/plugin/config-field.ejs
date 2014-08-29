@@ -1,0 +1,14 @@
+<div class="form-group">
+  <label class="col-md-3 control-label"><%= i18n('plugin.'+name+'.'+key, i18n('plugin.'+key, key)) %></label>
+  <div class="col-md-8">
+    <% if (value === undefined){ value=''; } %>
+    <% if (typeof value === 'boolean'){ %>
+    <label class="radio-inline"><input type="radio" name="<%= prefix %>.<%= key %>" value="true"  <%-  value ? 'checked="checked"' : '' -%>><%- i18n('field.true') -%></label>
+    <label class="radio-inline"><input type="radio" name="<%= prefix %>.<%= key %>" value="false" <%- !value ? 'checked="checked"' : '' -%>><%- i18n('field.false') -%></label>
+    <% } else if (typeof value === 'number') {  %>
+    <input class="form-control" type="number" name="<%= prefix %>.<%= key %>" value="<%= value %>">
+    <% } else { %>
+    <input class="form-control" type="text" name="<%= prefix %>.<%= key %>" value="<%= value %>" placeholder="<%- i18n('field.placeholder') -%>">
+    <% } %>
+  </div>
+</div>

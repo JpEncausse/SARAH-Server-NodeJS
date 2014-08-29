@@ -1,0 +1,38 @@
+<grammar version="1.0" xml:lang="fr-FR" mode="voice" root="ruleMeteo" xmlns="http://www.w3.org/2001/06/grammar" tag-format="semantics/1.0">
+  <rule id="ruleMeteo" scope="public">
+    <example>Sarah quelle est la météo pour demain ?</example>
+    <tag>out.action=new Object(); </tag>
+    
+    <item>Sarah</item>
+    
+    <one-of>
+      <item>quelle est la météo</item>
+      <item>quelle est le temps</item>
+      <item>est-ce qu'il pleut</item>
+      <item>comment dois-je m'habiller</item>
+    </one-of>
+
+    <item repeat="0-1">
+      <one-of>
+        <item>aujourd'hui<tag>out.action.date="0";</tag></item>
+        <item>en ce moment<tag>out.action.date="0";</tag></item>
+        <item>ce soir<tag>out.action.date="0_soir";</tag></item>
+        <item>demain<tag>out.action.date="1_matin";</tag></item>
+        <item>après demain<tag>out.action.date="2_matin";</tag></item>
+      </one-of>
+    </item>
+
+    <item repeat="0-1">
+      <item>à</item>
+      <one-of>
+        <item>Versailles <tag> out.action.zip="786460"; </tag></item>
+        <item>Bordeaux <tag> out.action.zip="330630"; </tag></item>
+        <item>Troyes<tag> out.action.zip="103870"; </tag></item>
+        <item>Rouen <tag> out.action.zip="765400"; </tag></item>
+        <item>Paris <tag> out.action.zip="750560"; </tag></item>
+      </one-of>
+    </item>
+    
+    <tag>out.action._attributes.uri="http://127.0.0.1:8080/sarah/meteo";</tag>
+  </rule> 
+</grammar>

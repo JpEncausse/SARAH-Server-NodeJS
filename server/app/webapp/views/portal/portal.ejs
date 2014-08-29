@@ -1,0 +1,14 @@
+<% layout('../layout/layout.ejs') -%>
+<% stylesheet('sarah/less/portal.css') %>
+<% script('packery/packery.pkgd.js') %>
+<% script('packery/draggabilly.pkgd.js') %>
+<% script('sarah/js/portal.js') %>
+
+<h1><%- i18n('portal.hello') -%></h1>
+
+<div class="portal">
+  <% var plugins = SARAH.PluginManager.getList(); %>
+  <% for (var i = 0 ; i < plugins.length ; i++) { %>
+  <%- partial('portlet.ejs', { 'plugin' : plugins[i] }) -%>
+  <% } %>
+</div>
