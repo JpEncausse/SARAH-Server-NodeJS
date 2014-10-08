@@ -1,10 +1,10 @@
 <% layout('../layout/layout.ejs') -%>
-<% stylesheet('sarah/less/portal.css') %>
-<% script('packery/packery.pkgd.js') %>
-<% script('packery/draggabilly.pkgd.js') %>
-<% script('sarah/js/portal.js') %>
+<% stylesheet('/sarah/less/portal.css') %>
+<% script('/packery/packery.pkgd.js') %>
+<% script('/packery/draggabilly.pkgd.js') %>
+<% script('/sarah/js/portal.js') %>
 
-<h1><%- i18n('portal.hello') -%></h1>
+<h1><%- i18n('portal.hello', req.user.displayName) -%></h1>
 
 <div class="portal">
   <% var plugins = SARAH.PluginManager.getList(); %>

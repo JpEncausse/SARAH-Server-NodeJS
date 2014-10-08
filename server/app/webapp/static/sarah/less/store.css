@@ -1,0 +1,17 @@
+#store .tab-content {
+  border: 1px solid #DDD;
+  border-top-width: 0px;
+}
+#store .tab-pane {
+  background: #FFF;
+  padding: 20px;
+}
+#store TD {
+  font-family: 'Open Sans Condensed Light', sans-serif;
+}
+#store TD.nowrap {
+  white-space: nowrap;
+}
+#store TD.fit {
+  width: 1%;
+}

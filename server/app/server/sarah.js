@@ -19,12 +19,14 @@ var init = function(){
   SARAH.LangManager    = require('./lang.js'  ).init();
   SARAH.PortalManager  = require('./portal.js').init();
   SARAH.ScriptManager  = require('./script.js').init();
+  SARAH.RuleEngine     = require('./rules.js').init();
+  SARAH.CRONManager    = require('./cron.js').init();
   SARAH.ProfileManager = require('./profile.js').init();
+  SARAH.Marketplace    = require('./marketplace.js').init();
   
   /*
   SARAH.RuleManager    = require('./rules.js').init();
   SARAH.PhantomManager = require('./phantom.js').init();
-  SARAH.CRONManager    = require('./cron.js').init();
   */
   
   SARAH.run      = SARAH.ScriptManager.run;
@@ -130,9 +132,11 @@ Router.all('/sarah/:name', function(req, res, next) {
   var options = {};
   extend(true, options, req.query);
   
-  // FIXME: Here we should call the Rule Engine
+  // 1. Log action into rule engine
+  var entry = SARAH.RuleEngine.log(name, options);
+  // info('Rule Engine Log:', entry);
   
-  // 2. Send back TTS
+  // 3. Send back TTS
   var callback = function(data){
     res.writeHead(200, {'Content-Type': 'text/html; charset=utf-8'});
     
@@ -155,9 +159,13 @@ Router.all('/sarah/:name', function(req, res, next) {
     else if (options.asknext){
       SARAH.asknext(options.asknext);
     }
+    
+    // 4. Guess next action from RuleEngine
+    var next = SARAH.RuleEngine.next(entry);
+    //info('Rule Engine Guess:', next);
   }
   
-  // 1. Run plugin's script
+  // 2. Run plugin's script
   SARAH.run(name, options, callback);
 });
 
@@ -288,8 +296,8 @@ var context = function(rules){
   return remote({ 'context' : rules });
 }
 
-var grammar = function(xml){
-  return remote({ 'grammar' : xml });
+var grammar = function(rule, xml){
+  return remote({ 'grammar' : rule , 'xml' : xml});
 }
 
 var asknext = function(rule, options){

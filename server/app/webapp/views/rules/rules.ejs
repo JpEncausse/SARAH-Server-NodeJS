@@ -1,3 +1,155 @@
 <% layout('../layout/layout.ejs') -%>
+<% stylesheet('/sarah/less/rules.css') %>
+<% script('/sarah/js/rules.js') %>
+
 
 <h1><%- i18n('nav.rules') -%></h1>
+
+<div id="rules">
+  <form action='/portal/rules' method='post' role="form" accept-charset="UTF-8" enctype="multipart/form-data">
+  <% var rules = SARAH.RuleEngine.getRules(); %>
+  <ul class="nav nav-tabs" role="tablist" id="rules_list">
+	  <li class="active"><a href="#default" role="tab" data-toggle="tab"><%- i18n('rules.default') -%></a></li>
+	  <li><a href="#filters" role="tab" data-toggle="tab"><%- i18n('rules.filters') -%></a></li>
+	  <li><a href="#custom" role="tab" data-toggle="tab"><%- i18n('rules.custom') -%></a></li>
+	  <li><a href="#learning" role="tab" data-toggle="tab"><%- i18n('rules.learning') -%></a></li>
+	  <li class="pull-right">
+      <button type="submit" id="opSave" name="opSave" class="btn" value="true"><%- i18n("rules.save") -%></button>
+	  </li>
+	</ul>
+  
+  <div class="tab-content">
+    <div id="default" class="tab-pane active">
+      <div class="alert alert-info" role="alert"><%- i18n('rules.default.info') -%></div>
+      
+      <table class="table table-striped table-ifttt">
+        <tr>
+          <td class="fit nowrap"><strong><%- i18n('rules.if') -%></strong></td>
+          <td class="fit nowrap"><span class="glyphicon glyphicon-bullhorn"></span> <%- i18n('rules.default.speech') -%></td>
+          <td class="fit nowrap"><strong><%- i18n('rules.then') -%></strong></td>
+          <td class="fit nowrap"><span class="glyphicon glyphicon-cog"></span> <%- i18n('rules.default.script') -%></td>
+          <td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td class="fit nowrap"><strong><%- i18n('rules.if') -%></strong></td>
+          <td class="fit nowrap"><span class="glyphicon glyphicon-hand-right"></span> <%- i18n('rules.default.gesture') -%></td>
+          <td class="fit nowrap"><strong><%- i18n('rules.then') -%></strong></td>
+          <td class="fit nowrap"><span class="glyphicon glyphicon-cog"></span> <%- i18n('rules.default.script') -%></td>
+          <td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td class="fit nowrap"><strong><%- i18n('rules.if') -%></strong></td>
+          <td class="fit nowrap"><span class="glyphicon glyphicon-qrcode"></span> <%- i18n('rules.default.qrcode') -%></td>
+          <td class="fit nowrap"><strong><%- i18n('rules.then') -%></strong></td>
+          <td class="fit nowrap"><span class="glyphicon glyphicon-cog"></span> <%- i18n('rules.default.script') -%></td>
+          <td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td class="fit nowrap"><strong><%- i18n('rules.if') -%></strong></td>
+          <td class="fit nowrap"><span class="glyphicon glyphicon-calendar"></span> <%- i18n('rules.default.calendar') -%></td>
+          <td class="fit nowrap"><strong><%- i18n('rules.then') -%></strong></td>
+          <td class="fit nowrap"><span class="glyphicon glyphicon-cog"></span> <%- i18n('rules.default.script') -%></td>
+          <td class="small"><%- i18n('rules.default.calendar.h') -%></td>
+        </tr>
+        <tr>
+          <td class="fit nowrap"><strong><%- i18n('rules.if') -%></strong></td>
+          <td class="fit nowrap"><span class="glyphicon glyphicon-calendar"></span> <%- i18n('rules.default.calendar') -%></td>
+          <td class="fit nowrap"><strong><%- i18n('rules.then') -%></strong></td>
+          <td class="fit nowrap"><span class="glyphicon glyphicon-volume-up"></span> <%- i18n('rules.default.speak') -%></td>
+          <td class="small"><%- i18n('rules.default.calendar.h') -%></td>
+        </tr>
+        <tr>
+          <td class="fit nowrap"><strong><%- i18n('rules.if') -%></strong></td>
+          <td class="fit nowrap"><span class="glyphicon glyphicon-earphone"></span> <%- i18n('rules.default.mobile') -%></td>
+          <td class="fit nowrap"><strong><%- i18n('rules.then') -%></strong></td>
+          <td class="fit nowrap"><span class="glyphicon glyphicon-cog"></span> <%- i18n('rules.default.script') -%></td>
+          <td class="small"><%- i18n('rules.default.mobile.h') -%></td>
+        </tr>
+      </table>
+      
+    </div>
+    
+    <div id="filters" class="tab-pane">
+      <div class="alert alert-info" role="alert"><%- i18n('rules.filters.info') -%></div>
+      
+      <table class="table table-striped table-ifttt">
+        <% var before = SARAH.RuleEngine.before(); %>
+        <tr>
+          <td class="fit nowrap"><strong><%- i18n('rules.if') -%></strong></td>
+          <td class="fit nowrap"><span class="glyphicon glyphicon-cog middle"></span> <%- i18n('rules.filters.before') -%> <input type='hidden' name='if' value='before' /></td>
+          <td class="fit nowrap"><strong><%- i18n('rules.then') -%></strong> <a href="/rules/script" class="code" data-action="modal"><%- i18n('rules.do') -%></a><input type='hidden' name='script' value="<%- before.script -%> " /></td>
+          <td class="fit nowrap"><span class="glyphicon glyphicon-cog middle"></span> <%- partial('rules-plugin.ejs', { name: 'then', value: before.then }) -%></td>
+          <td><input type="checkbox" class='switch' <%- before.disabled == 'true' ? '' : 'checked' -%>><input type="hidden" name="disabled" value="<%- before.disabled ? 'true' : 'false' -%>"/></td>
+        </tr>
+        
+        <% var after = SARAH.RuleEngine.after(); %>
+        <tr>
+          <td class="fit nowrap"><strong><%- i18n('rules.if') -%></strong></td>
+          <td class="fit nowrap"><span class="glyphicon glyphicon-cog middle"></span> <%- i18n('rules.filters.after') -%> <input type='hidden' name='if' value='after' /></td>
+          <td class="fit nowrap"><strong><%- i18n('rules.then') -%></strong> <a href="/rules/script" class="code" data-action="modal"><%- i18n('rules.do') -%></a><input type='hidden' name='script' value="<%- after.script -%> " /></td>
+          <td class="fit nowrap"><span class="glyphicon glyphicon-cog middle"></span> <%- partial('rules-plugin.ejs', { name: 'then', value: after.then }) -%></td>
+          <td><input type="checkbox" class='switch' <%- after.disabled == 'true' ? '' : 'checked' -%>><input type="hidden" name="disabled" value="<%- after.disabled ? 'true' : 'false' -%> "/></td>
+        </tr>
+      </table>
+      
+    </div>
+    
+    <div id="custom" class="tab-pane">
+      <div class="alert alert-info" role="alert"><%- i18n('rules.custom.info') -%></div>
+      
+      <table class="table table-striped table-ifttt">
+        <% for (var i in rules){ %>
+        <% if (rules[i].if == 'before' || rules[i].if == 'after') { continue; }%>
+        <tr>
+          <td class="fit nowrap"><strong><%- i18n('rules.if') -%></strong></td>
+          <td class="fit nowrap"><span class="glyphicon glyphicon-cog middle"></span> <%- partial('rules-plugin.ejs', { name: 'if', value: rules[i].if }) -%></td>
+          <td class="fit nowrap"><strong><%- i18n('rules.then') -%></strong> <a href="/rules/script" class="code" data-action="modal"><%- i18n('rules.do') -%></a><input type='hidden' name='script' value="<%- rules[i].script -%> " /></td>
+          <td class="fit nowrap"><span class="glyphicon glyphicon-cog middle"></span> <%- partial('rules-plugin.ejs', { name: 'then', value: rules[i].then }) -%></td>
+          <td><input type="checkbox" class='switch' <%- rules[i].disabled == 'true' ? '' : 'checked' -%>><input type="hidden" name="disabled" value="<%- rules[i].disabled -%>"/></td>
+        </tr>
+        <% } %>
+        <tr id="rule-template" class="hide">
+          <td class="fit nowrap"><strong><%- i18n('rules.if') -%></strong></td>
+          <td class="fit nowrap"><span class="glyphicon glyphicon-cog middle"></span> <%- partial('rules-plugin.ejs', { name: 'if', value: '' }) -%></td>
+          <td class="fit nowrap"><strong><%- i18n('rules.then') -%></strong> <a href="/rules/script" class="code" data-action="modal"><%- i18n('rules.do') -%></a><input type='hidden' name='script' value=" " /></td>
+          <td class="fit nowrap"><span class="glyphicon glyphicon-cog middle"></span> <%- partial('rules-plugin.ejs', { name: 'then', value: '' }) -%></td>
+          <td><input type="checkbox" class='switch-template' checked><input type="hidden" name="disabled" value="false"/></td>
+        </tr>
+      </table>
+      <button class="btn btn-primary rule-add"><%- i18n('rules.custom.add-rule') -%></button>
+    </div>
+    
+    <div id="learning" class="tab-pane">
+      <div class="alert alert-info" role="alert"><%- i18n('rules.learning.info') -%></div>
+      
+      <table class="table table-bordered table-hover table-striped table-condensed">
+        <tr>
+          <th>&nbsp;</th>
+          <th><%- i18n('rules.learning.name') -%></th>
+          <th><%- i18n('rules.learning.next') -%></th>
+          <th><%- i18n('rules.learning.timeOfDay') -%></th>
+          <th><%- i18n('rules.learning.dayOfWeek') -%></th>
+          <th><%- i18n('rules.learning.dayOfMonth') -%></th>
+          <th><%- i18n('rules.learning.location') -%></th>
+          <th><%- i18n('rules.learning.count') -%></th>
+        </tr>
+      <% var logs = SARAH.RuleEngine.getLogs(); %>
+      <% for (var i in logs) { %>
+      <% var entry = logs[i]; %>
+        <tr>
+          <td class="text-right"><%- i -%>.</td>
+          <td><%- entry.name -%></td>
+          <% var next = SARAH.RuleEngine.next(entry); %>
+          <td><%- next ? next.name : '' -%></td>
+          <td class="text-right"><%- Helper.secToTime(entry.timeOfDay) -%></td>
+          <td class="text-right"><%- entry.dayOfWeek -%></td>
+          <td class="text-right"><%- entry.dayOfMonth -%></td>
+          <td class="text-center"><%- entry.location -%></td>
+          <td class="text-right"><%- entry.count -%></td>
+        </tr>
+      <% } %>
+      </table>
+    </div>
+  </div>
+  </form>
+</div>

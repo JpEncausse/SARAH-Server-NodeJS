@@ -14,6 +14,14 @@ exports.dispose = function(){
   info('Plugin TEST is disposed ...');
 }
 
+exports.ajax = function(req, res, next){
+  // Called before rendering portlet when clicking on 
+  // <a href="/plugin/template" data-action="ajax">click me</a>  
+  // Because portlet CAN'T do asynchronous code
+  info('Plugin TEST ajax request ...');
+  next();
+}
+
 exports.speak = function(tts, async){
   // Hook called for each SARAH.speak()
   // to perform change on string

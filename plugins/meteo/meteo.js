@@ -1,43 +1,50 @@
-var action = function(data, callback, config, SARAH){ 
+var action = exports.action = function(data, callback){ 
 
   // Retrieve config
-  config = config.modules.meteo;
+  var config = Config.modules.meteo;
   if (!config.zip){
     console.log("Missing Meteo config");
     callback({'tts' : 'Zip code invalide'});
     return;
   }
   
-  var url = 'http://www.meteo-france.mobi/ws/getDetail/france/'+(data.zip || config.zip)+'.json'
-  var request = require('request');
-  
-  request({ 'uri' : url }, function (err, response, body){
-  
-    if (err || response.statusCode != 200) {
-      callback({'tts': "L'action a échoué"});
-      return;
-    }
+  // Request
+  query(data.zip  || config.zip, 
+        data.date || config.date, callback);
+}
 
-    last = scrap(body, data.date || config.date);
+// ==========================================
+//  QUERY
+// ==========================================
+
+var request = require('request');
+var query = function(zip, date, callback){
+  var url = 'http://www.meteo-france.mobi/ws/getDetail/france/'+zip+'.json';
+  request({ 'uri' : url }, function (err, response, body){
+    if (err || response.statusCode != 200) {
+      return callback({'tts': "L'action a échoué"});
+    }
+    last = scrap(body, date);
     callback(last);
   });
 }
-exports.action = action;
 
 // ==========================================
 //  INIT
 // ==========================================
 
 var last = false;
-exports.last = function(){  
-  if (!last){
-    action({}, function(){}, SARAH.ConfigManager.getConfig(), SARAH);
-  }
-  return last; 
-};
+exports.last = function(){ return last; };
 
-var SARAH = false;
-exports.init = function(bot){ SARAH = bot; }
+// Refresh 'last' at startup
+exports.init = function(){
+  action({}, function(){});
+}
+
+// Refresh 'last' on click logo 
+exports.ajax = function(req, res, next){
+  action({}, next);
+}
 
 // ==========================================
 //  SCRAP

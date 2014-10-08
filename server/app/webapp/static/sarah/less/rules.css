@@ -1,0 +1,46 @@
+#rules .tab-content {
+  border: 1px solid #DDD;
+  border-top-width: 0px;
+}
+#rules .tab-pane {
+  background: #FFF;
+  padding: 20px;
+}
+#rules .table-ifttt {
+  font-size: 28px;
+  line-height: 40px;
+}
+#rules .table-ifttt .glyphicon {
+  line-height: inherit;
+}
+#rules .table-ifttt .glyphicon.middle {
+  vertical-align: middle;
+}
+#rules .table-ifttt STRONG {
+  color: #00BFDD;
+}
+#rules .table-ifttt A.code {
+  color: #D9534F;
+}
+#rules .table-ifttt TD {
+  border-top: none;
+  padding-right: 40px;
+}
+#rules .table-ifttt TD.nowrap {
+  white-space: nowrap;
+}
+#rules .table-ifttt TD.fit {
+  width: 1%;
+}
+#rules .table-ifttt TD.small {
+  font-size: 14px;
+  line-height: 20px;
+}
+#rules .table-ifttt TD .form-control {
+  display: inline-block;
+  font-size: 24px;
+  min-width: 150px;
+  padding: 0;
+  height: 40px;
+  text-transform: capitalize;
+}

@@ -6,13 +6,18 @@
   },
   
   "http" : {
+    "root"      : "",
     "port"      : 8080,
     "ip"        : "127.0.0.1",
+    "remote"    : "http://127.0.0.1:8888",
     "upload"    : "E:\\Dropbox\\Public\\[FIXME]\\",
-    "remote"    : "http://127.0.0.1:8888/",
     "timeout"   : 4000,
     "proxy"     : false,
     "phantom"   : ""
+  },
+  
+  "auth" : {
+    "users"     : false
   },
   
   "phantoms" : { },

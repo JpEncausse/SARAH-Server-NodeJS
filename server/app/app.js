@@ -12,6 +12,36 @@ String.prototype.startsWith = function(prefix) {
   return this.indexOf(prefix) === 0;
 };
 
+String.prototype.capitalize = function() {
+  return this.charAt(0).toUpperCase() + this.slice(1);
+}
+
+global.Helper = {};
+
+Helper.parse = function(str){
+  if (str.trim) str = str.trim();
+  if (str === 'true')  return true;
+  if (str === 'false') return false;
+  var num = Helper.isNumeric(str) ? parseFloat(str) : NaN;
+  return isNaN(num) ? str : num;
+}
+
+Helper.isNumeric = function(value) {
+  return /^\d+(\.\d+)?$/.test(value);
+}
+
+Helper.secToTime = function(duration) {
+  var seconds = parseInt((duration)%60)
+    , minutes = parseInt((duration/60)%60)
+      , hours = parseInt((duration/(60*60))%24);
+
+  hours   = (hours   < 10) ? "0" + hours   : hours;
+  minutes = (minutes < 10) ? "0" + minutes : minutes;
+  seconds = (seconds < 10) ? "0" + seconds : seconds;
+
+  return hours + ":" + minutes + ":" + seconds;
+}
+
 // ==========================================
 //  LOG MANAGER
 // ==========================================
@@ -47,6 +77,8 @@ info("==========================================");
 // Add SARAH to global functions
 require('./server/sarah.js').init();
 
+
+
 // ==========================================
 //  EXPRESS SERVER
 // ==========================================
@@ -73,33 +105,51 @@ var methodOverride = require('method-override');
 var serveStatic = require('serve-static');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
-
+var session = require('express-session');
 
 app.use(multer({ dest:  __webapp+'/uploads' }))
 app.use(methodOverride('X-HTTP-Method-Override'));
-app.use(cookieParser());
 app.use(bodyParser.urlencoded({ extended: false }));
+app.use(cookieParser());
+app.use(session({ secret: 'sarah' }));
 
 // Set local helpers
 app.locals.SARAH = SARAH;
 
 // Serve static files
-app.use(less(__webapp + '/static'));
-app.use(serveStatic(__webapp + '/static'));
+app.use(less(__webapp + '/static'      , {}, {}, { 'compress' : false }));
+app.use(less(SARAH.ConfigManager.PLUGIN, {}, {}, { 'compress' : false }));
 
+app.use(serveStatic(__webapp + '/static'));
 
 // ==========================================
 //  ROUTERS
 // ==========================================
 
-SARAH.VIEWS = __webapp+'/views';
-
-app.use(SARAH.ConfigManager.Router);
 app.use(SARAH.LangManager.Router);
 app.use(SARAH.PortalManager.Router);
+app.use(SARAH.ConfigManager.Router);
 app.use(SARAH.PluginManager.Router);
 app.use(SARAH.ProfileManager.Router);
+app.use(SARAH.RuleEngine.Router);
+app.use(SARAH.Marketplace.Router);
 app.use(SARAH.Router);
+
+var static_plugins = serveStatic(SARAH.ConfigManager.PLUGIN);
+app.use(function(req, res, next){
+  var path = req.path
+  if (/^\/\w+\/www\/.*$/.test(path)){
+    static_plugins(req, res, next);
+  } else {
+    next();
+  }
+});
+
+// ==========================================
+//  START CRON
+// ==========================================
+
+SARAH.CRONManager.start();
 
 // ==========================================
 //  START SERVER

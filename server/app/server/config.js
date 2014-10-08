@@ -27,10 +27,13 @@ var init = function(){
 // ------------------------------------------
 //  CONFIG
 // ------------------------------------------
+var path   = require('path');
+var ROOT   = path.normalize(__dirname+'/..'); 
+var SERVER = path.normalize(ROOT+'/server/server.prop');
+var PLUGIN = process.env.PATH_PLUGINS || path.normalize(ROOT+'/plugins');
+var CUSTOM = path.normalize(ROOT+'/data/custom.prop');
 
-var SERVER = __dirname+'/server.prop';
-var PLUGIN = process.env.PATH_PLUGINS;
-var CUSTOM = __dirname+'/../data/custom.prop';
+info('ROOT', ROOT, '\nSERVER', SERVER, '\nPLUGIN', PLUGIN);
 
 var Config = { 'debug' : false };
 var load = function(){
@@ -88,7 +91,7 @@ var loadPlugins = function(folder, json){
  * Load custom properties
  */
 var loadCustoms = function(){
-  if (!fs.existsSync(CUSTOM)) { return {}; }
+  if (!fs.existsSync(CUSTOM)) { warn("Can't load custom properties !", CUSTOM); return {}; }
   info('Loading custom properties...', CUSTOM);
   
   var load = fs.readFileSync(CUSTOM,'utf8');
@@ -111,7 +114,7 @@ var retains = function(source, target){
     if (target[attr] === undefined
         && attr != 'x' && attr != 'y' 
         && attr != 'w' && attr != 'h'
-        && attr != 'c'){ return warn('Skip config: %s', attr); }
+        && attr != 'c' && attr != 'disabled'){ return warn('Skip config: %s', attr); }
     clean[attr] = retains(source[attr], target[attr]);
   });
   
@@ -138,7 +141,7 @@ var loadJSON = function(name){
 var save = function(cfg) {
   try {
     Config = cfg || Config;
-    var json = JSON.stringify(Config);
+    var json = JSON.stringify(Config, undefined, 2);
 
     //json = json.replace(/\{/g,"{\n  ").replace(/\}/g,"\n  }").replace(/,/g,",\n  ");
     fs.writeFileSync(CUSTOM, json, 'utf8');
@@ -152,46 +155,8 @@ var save = function(cfg) {
 //  ROUTER
 // ------------------------------------------
 
-var Router = express.Router();
 
-Router.post('/', function(req, res, next) {
-  
-  // SAVE full JSON ----------
-  var json = req.body.json;
-  if (json){
-    // Merge JSON with config
-    extend(true, Config, JSON.parse(json));
-    
-    // Save config
-    save(Config);
-    
-    // Redirect
-    res.redirect('/');
-    return;
-  }
-  
-  // SAVE a sub key ----------
-  var key = req.body.key;
-  if (!key){ 
-    res.redirect('/');  
-    return;
-  }
-  
-  // Find sub configuration
-  var config = Config;
-  key.split('.').forEach(function(attr){  config = config[attr]; });
-  
-  // Update given keys
-  Object.keys(req.body).forEach(function(attr){
-    if (attr == 'key') { return; }
-    info('%s.%s => %s', key, attr, req.body[attr]);
-    config[attr] = req.body[attr];
-  });
-  
-  // Save
-  save(Config);
-  res.redirect('/');
-});
+var Router = express.Router();
 
 
 // ------------------------------------------
@@ -207,7 +172,8 @@ var ConfigManager = {
   
   'Router' : Router,
   'Config' : Config,
-  'PLUGIN' : PLUGIN
+  'PLUGIN' : PLUGIN,
+  'ROOT'   : ROOT
 }
 
 // Exports Manager

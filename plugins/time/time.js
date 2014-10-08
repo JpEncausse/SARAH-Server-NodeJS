@@ -1,5 +1,6 @@
 
-exports.action = function(data, callback){
+exports.action = function(data, next){
+  
   var date = new Date();
   
   var text = 'il est ' + date.getHours() + ' heure ';
@@ -9,5 +10,6 @@ exports.action = function(data, callback){
   text += ' [name]';
   
   // Callback with TTS
-  callback({'tts': text});
+  next({'tts': text});
+
 }

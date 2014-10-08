@@ -15,6 +15,7 @@
 - [X] SERVER: Remove card flipping (messed up with IE, lots of HTML, not accessible)
 - [X] SERVER: Add new i18n library for core and plugins !
 - [X] SERVER: Plugins with key disabled are skipped
+- [X] SERVER: Can disable from store
 - [X] SERVER: New Modal feature
 - [X] SERVER: New Ajax feature (refresh of portlets)
 - [X] SERVER: Add timeout for call(plugin)
@@ -26,6 +27,14 @@
 - [X] SERVER: Add new feature asknext to speak ruleid example
 - [X] SERVER: Allow proxy for HTTP request
 - [X] SERVER: Profile is now a JSON Object attach to the server and global
+- [X] SERVER: Plugins can provides LESS files !
+- [X] SERVER: Plugins can provides static files and pages files !
+- [X] SERVER: Add support to Passport (authentication)
+- [X] SERVER: Add unzip and fs-extra libraries
+- [X] SERVER: Create plugin from a template
+- [X] SERVER: Fix custom.prop JSON format (2 spaces for readability)
+- [X] SERVER: If tts === answer then return random answer
+- [X] SERVER: Fix before/after rules and way to run sub script
 
 - [X] CLIENT: FULL Rewrite of core C#
 - [X] CLIENT: New AddOn framework

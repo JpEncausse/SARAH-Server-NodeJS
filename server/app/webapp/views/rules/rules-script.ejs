@@ -1,0 +1,11 @@
+<% layout('../layout/modal.ejs') -%>
+
+<% stylesheet('/codemirror/codemirror.css') %>
+<% script('/codemirror/codemirror.js') %>
+<% script('/codemirror/mode/javascript.js') %>
+<% script('/codemirror/mode/xml.js') %>
+
+<div class="alert alert-info" role="alert" style="margin-bottom: 30px;"><%- i18n('modal.rules.script.h') -%></div>
+<div class="modal-stick" style="border-top: 1px solid #e5e5e5;">
+<textarea id="codearea"></textarea>
+</div>

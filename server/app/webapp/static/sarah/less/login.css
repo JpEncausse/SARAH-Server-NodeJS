@@ -1,0 +1,10 @@
+#login {
+  border: 1px solid #CCC;
+  margin: 40px auto;
+  width: 600px;
+  border-radius: 10px;
+  background: #F5F3F6;
+}
+#login H2 {
+  margin-bottom: 30px;
+}

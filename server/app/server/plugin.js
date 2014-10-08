@@ -1,4 +1,4 @@
-var fs      = require('fs');
+var fs      = require('fs-extra');
 var request = require('request');
 var express = require('express');
 var extend  = require('extend');
@@ -12,9 +12,6 @@ var init = function(){
   
   // Refresh local plugins
   refresh();
-
-  // Refresh remote plugins
-  remote();
   
   return PluginManager;
 }
@@ -81,16 +78,16 @@ function Plugin(options) {
     this.script = script;
   }
   
-  // Check has custom portlet.html
-  var template = SARAH.ConfigManager.PLUGIN+'/'+this.name+'/portlet.html';
+  // Check has custom portlet.ejs
+  var template = SARAH.ConfigManager.PLUGIN+'/'+this.name+'/portlet.ejs';
   if (fs.existsSync(template)){
     this.template = template;
   } else {
     this.template = 'portlet.html';
   }
   
-  // Check has index.html
-  var index = SARAH.ConfigManager.PLUGIN+'/'+this.name+'/index.html';
+  // Check has index.ejs
+  var index = SARAH.ConfigManager.PLUGIN+'/'+this.name+'/index.ejs';
   if (fs.existsSync(index)){
     this.index = index;
   }
@@ -169,6 +166,7 @@ var refresh = function(){
   for(var i = 0 ; i < keys.length ; i++){
     var key = keys[i];
     cache[key] = new Plugin ({'name' : key });
+    cache[key].getInstance();
   }
   
   keys = Object.keys(Config[TYPE_PHANTOMS]);
@@ -176,6 +174,7 @@ var refresh = function(){
     var key = keys[i];
     if (cache[key]) continue;
     cache[key] = new Plugin ({'name' : key });
+    cache[key].getInstance();
   }
   
   keys = Object.keys(Config[TYPE_CRON]);
@@ -183,6 +182,7 @@ var refresh = function(){
     var key = keys[i];
     if (cache[key]) continue;
     cache[key] = new Plugin ({'name' : key });
+    cache[key].getInstance();
   }
 }
 
@@ -214,7 +214,9 @@ var sort = function(ids, xPos, yPos){
   getList(true);
 }
 
-var getList = function(refresh){ 
+var getList = function(clean){ 
+  
+  if (clean){ refresh(); }
   
   var keys = Object.keys(cache);
   keys = keys.sort(function(k1, k2){
@@ -242,26 +244,6 @@ var getList = function(refresh){
   return list;
 }
 
-// ------------------------------------------
-//  MARKETPLACE
-// ------------------------------------------
-
-var MARKETPLACE = 'http://plugins.sarah.encausse.net';
-
-var cacheNet = {};
-var remote = function(){
-  request({ 
-    'uri' : MARKETPLACE, 
-    'json' : true,
-    'headers': {'user-agent': SARAH.USERAGENT} 
-  }, 
-  function (err, response, json){
-    if (err || response.statusCode != 200) {
-      return warn("Can't retrieve remote plugins");
-    }
-    cacheNet = json;
-  });
-}
 
 // ------------------------------------------
 //  FIND / SEEK
@@ -274,6 +256,21 @@ var find = function(name){
 var exists = function(name){
   var plugin = find(name);
   return plugin ? true : false;
+}
+
+var remove = function(name, callback){
+  var plugin = find(name);
+  if (!plugin){ return callback(); }
+  
+  // Remove from filesystem
+  var path = SARAH.ConfigManager.PLUGIN+'/'+name;
+  info('Removing %s plugin...', path);
+  if (fs.existsSync(path)){ fs.removeSync(path); }
+  
+  // Remove in memory
+  refresh();
+  
+  callback();
 }
 
 // ------------------------------------------
@@ -301,7 +298,7 @@ Router.get('/plugin/help/:name', function(req, res, next) {
   var name   = req.params.name; 
   var plugin = find(name);
   
-  if (plugin.index) {
+  if (plugin && plugin.index) {
     return res.render(plugin.index, {'title' : i18n('modal.plugin.help', name)});
   }
   next();
@@ -319,13 +316,20 @@ Router.post('/plugin/config/:name', function(req, res, next) {
   var keys    = Object.keys(req.body);
   for(var i   = 0 ; i < keys.length ; i++){
     var key   = keys[i];
-    var value = parse(req.body[key]);
+    var value = Helper.parse(req.body[key]);
     var pfx   = key.substring(0, key.indexOf('.'));
     var prop  = key.substring(key.indexOf('.')+1);
+    info('[%s] %s.%s.%s = %s',key, pfx, name, prop, value);
     Config[pfx][name][prop] = value;
   }
   SARAH.ConfigManager.save();
-  return res.render('plugin/config.ejs', {'title' : i18n('modal.plugin.config', name), 'message' : true });
+  
+  var referer = req.headers.referer;
+  if (referer && !referer.endsWith('/portal')){
+    return res.redirect(referer);
+  } else {
+    return res.render('plugin/config.ejs', {'title' : i18n('modal.plugin.config', name), 'message' : true });
+  }
 });
 
 Router.get('/plugin/edit/:name', function(req, res, next) { 
@@ -340,19 +344,28 @@ Router.all('/plugin/sort', function(req, res, next) {
   res.end();
 });
 
+Router.all('/plugin/:name/:path*', function(req, res, next) { 
+  var name   = req.params.name;
+  var plugin = find(name);
+  if (!plugin) return res.end();
+  
+  var path = req.params.path
+  if (!path) return res.end();
+  
+  res.render(SARAH.ConfigManager.PLUGIN+'/'+name+'/'+path, { "plugin" : plugin});
+});
+
 Router.all('/plugin/:name*', function(req, res, next) { 
   var plugin = find(req.params.name);
   if (!plugin) return res.end();
-  res.render('portal/portlet.ejs', { "plugin" : plugin});
+  
+  var render = function(){
+    res.render('portal/portlet.ejs', { "plugin" : plugin});
+  }
+  
+  var instance = plugin.getInstance();
+  if (instance.ajax){ instance.ajax(req, res, render); } else { render(); }
 });
-
-
-var parse = function(str){
-  if (str === 'true')  return true;
-  if (str === 'false') return false;
-  var num = parseInt(str);
-  return isNaN(num) ? str : num;
-}
 
 // ------------------------------------------
 //  PUBLIC
@@ -366,6 +379,7 @@ var PluginManager = {
   
   'find'          : find,
   'exists'        : exists,
+  'remove'        : remove,
   
   'trigger'       : trigger,
   'listen'        : listen,

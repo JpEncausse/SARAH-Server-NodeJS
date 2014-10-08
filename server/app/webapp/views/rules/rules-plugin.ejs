@@ -1,0 +1,7 @@
+<% var plugins = SARAH.PluginManager.getCache(); %>
+<select class="form-control" name="<%- name -%>">
+  <option value=" "><%- i18n('rules.none') -%></option>
+  <% for(var i in plugins){ %>
+  <option value="<%- plugins[i].name -%>" <%- value == plugins[i].name ? 'selected' : '' -%>><%- plugins[i].name -%></option>
+  <% } %>
+</select>

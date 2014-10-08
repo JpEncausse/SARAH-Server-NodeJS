@@ -13,12 +13,16 @@ var init = function(){
 //  RUN / CALL
 // ------------------------------------------
 
+var last = function(){
+  // FIXME
+}
+
 var run = function(name, options, callback){
   var data = {};
   extend(true, data, options);
   
   // 3. Finish by calling back
-  var finish = function(json){
+  var next = function(json){
     if (json){ extend(true, data, json); }
     callback(data);
   }
@@ -26,11 +30,18 @@ var run = function(name, options, callback){
   // 2. Dispatch to next script
   var dispatch = function(json){
     if (json){ extend(true, data, json); }
-    //SARAH.RuleEngine.dispatch(name, data, finish);
-    finish(json);
+    
+    // 1.3 Call script
+    SARAH.RuleEngine.dispatch('after', data);
+    
+    // Dispatch
+    SARAH.RuleEngine.dispatch(name, data, next);
   }
   
-  // 1. Call script
+  // 1.1 Call before
+  SARAH.RuleEngine.dispatch('before', data);
+  
+  // 1.2 Call script
   call(name, data, dispatch);
 }
 
@@ -43,10 +54,13 @@ var call = function(name, options, callback){
     if (callback){ callback(); } return;
   }
   
+  // Get instance outside of a zone;
+  var plug = plugin.getInstance(); 
+   
   // Set callback
-  var finish = function(data){
-    if (timeout){ clearTimeout(timeout); }
-    
+  var next = function(data){
+    if (timeout){ clearTimeout(timeout); } else { return; }
+          
     var end = (new Date()).getTime();
     info('call('+name+') in ', (end-start)+'ms');
     
@@ -55,17 +69,42 @@ var call = function(name, options, callback){
   
   // Set timeout
   var timeout = setTimeout(function(){
-    warn('call('+name+') as timeout ! Check plugin\'s callback()');
-    finish(); 
+    warn('action('+name+') as timeout ! Check plugin\'s callback()');
+    next();
   }, Config.http.timeout);
-
+  
   // Run script
-  var start = (new Date()).getTime();
-  try { plugin.getInstance().action(options, finish); }
+  var start  = (new Date()).getTime();
+  try { 
+    var instance = plugin.getInstance();
+    plugin.getInstance().action(options, next, Config, SARAH);
+  }
   catch(ex){ 
     error('call('+name+') ', ex.message);
-    if (callback){ callback(); }
+    next();
   }
+  
+  // Run script
+  /*
+  require('zone').enable();
+  var start  = (new Date()).getTime();
+  zone.create(function Call() {
+    
+    plug.action(options, function(data){ zone.return(data); });
+    
+  }).complete(function(err, args){
+    
+    if (timeout){ clearTimeout(timeout); } else { return; }
+    var end = (new Date()).getTime();
+    info('call('+name+') in ', (end-start)+'ms');
+    
+    if (callback){ callback(data); }
+    
+  }).catch(function(err) {
+     error('call('+name+') ', ex.message);
+     if (callback){ callback(); }
+  });
+  */
 }
 
 // ------------------------------------------
@@ -81,6 +120,15 @@ var standBy = function(motion, device){
 }
 
 var speak = function(tts, async){
+  if (!tts){ return tts; }
+  
+  // Answer
+  if (tts == 'answer'){ 
+    var answers = Config.bot.answers.split('|');
+    tts = answers[ Math.floor(Math.random() * answers.length)];
+  }
+      
+  // Dispatch to all plugins
   var plugins = SARAH.PluginManager.getList();
   for (var i = 0 ; i < plugins.length ; i++){
     var plugin = plugins[i].getInstance();
@@ -106,6 +154,7 @@ var ScriptManager = {
   'init'     : init,
   'run'      : run,
   'call'     : call,
+  'last'     : last,
   'standBy'  : standBy,
   'speak'    : speak
 }

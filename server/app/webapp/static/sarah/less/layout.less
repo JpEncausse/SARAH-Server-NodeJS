@@ -39,6 +39,13 @@ BODY { font-family: 'Open Sans Condensed', sans-serif; }
 }
 
 // ------------------------------------------
+//  HELPERS
+// ------------------------------------------
+
+.text-strikethrough { text-decoration: line-through; }
+.text-capital { text-transform: capitalize; }
+
+// ------------------------------------------
 //  SCROLLBAR
 // ------------------------------------------
 
@@ -68,11 +75,21 @@ BODY { font-family: 'Open Sans Condensed', sans-serif; }
 
 .modal-body {
   font-family: 'Open Sans Condensed Light', sans-serif;
+  font-size: 16px;
+  overflow-y: auto;
+  max-height: 600px;
+  IMG { max-width: 100%; }
+  
+  .modal-stick{ margin: -15px; }
 }
-
+.modal-header {
+  color: #FFF;
+  background-color: #D9534F;
+  border-radius: 6px 6px 0px 0px;
+}
 .modal-footer {
   background-color: #EEE;
-  border-radius: 6px;
+  border-radius: 0px 0px 6px 6px;
 }
 
 .form-horizontal { 

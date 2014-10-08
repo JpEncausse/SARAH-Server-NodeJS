@@ -53,7 +53,13 @@ This page describe Server's Core/Module specification. SARAH developers should s
 - moment          (https://github.com/moment/moment)
 - feedparser      (https://github.com/danmactough/node-feedparser)
 - ent             (https://github.com/substack/node-ent)
+- nedb            (https://github.com/louischatriot/nedb)
 - scraperjs ???   (https://github.com/ruipgil/scraperjs)
+- zone ???        (https://github.com/nodeloop/zone) => broken
+- passport        (https://github.com/jaredhanson/passport)
+- unzip           (https://github.com/EvanOxfeld/node-unzip)
+- fs-extra        (https://github.com/jprichardson/node-fs-extra)
+- cron            (https://github.com/ncb000gt/node-cron)
 
 
 ### ExpressJS
@@ -118,8 +124,8 @@ SARAH.askme("What is your favorite sound", {
 
 The i18n() function is a **global** translate feature that relies on /locales JSON translation.  
 
-- Plugins can have a /locale/fr.js for their translations
-- Use answer() to move answers to an XML grammar
+- Plugins can have a `/locale/fr.js` for their translations
+- Use `answer()` to move answers to an XML grammar
 
 
 ## Portal Manager
@@ -128,11 +134,14 @@ Portal Manager handle all Web GUI features. It also handle the Dashboard.
 
 ### Libraries
 
-- jquery 3.11.1   (http://jquery.com/)
-- bootstrap 3.2.0 (https://github.com/twbs/bootstrap)
-- packery 1.2.3   (https://github.com/metafizzy/packery)
-- moment 2.8.1    (https://github.com/moment/moment)
-- famfamfam flags (http://www.famfamfam.com/lab/icons/flags/)
+- jquery 3.11.1    (http://jquery.com/)
+- bootstrap 3.2.0  (https://github.com/twbs/bootstrap)
+- bootstrap-switch (http://www.bootstrap-switch.org/)
+- packery 1.2.3    (https://github.com/metafizzy/packery)
+- moment 2.8.1     (https://github.com/moment/moment)
+- famfamfam flags  (http://www.famfamfam.com/lab/icons/flags/)
+- sparkline        (https://github.com/gwatts/jquery.sparkline)
+- codemirror 4.6   (http://codemirror.net/)
 
 ### Layouts
 
@@ -141,7 +150,14 @@ The site render pages templates using EJS engine. New pages should relies on lay
 
 ### Modal
 
-TBW.
+
+#### Confirm
+
+A little help that popup to confirm an action if the DOM element contains `.confirm` class
+
+```
+<button type="submit" class="btn btn-default confirm">Click Me</button>
+```
 
 ### Ajax
 
@@ -157,26 +173,86 @@ Config Manager handle configuration of core and plugins.
 
 Config is a **global** JSON object merging all property files. DO NOT put password in server.prop or {plugin}.prop ONLY custom.prop.
 
+### Update and Save
+
+Configuration object should NEVER be cloned but only updated and saved using following code:
+
+```
+Config.bot.name = 'J.A.R.V.I.S';
+SARAH.ConfigManager.save();
+```
+
+A POST to `/plugin/config/:name?modules.param=value` can peform a plugin update.
+
+
 ## Plugin Manager
 
-Plugin Manager handle plugin life cycle, marketplace and intallation.  Plugins folder is defined by Shell ENV var: PATH_PLUGINS
+Plugin Manager handle plugin life cycle, marketplace and installation.  Plugins folder is defined by Shell ENV var: PATH_PLUGINS
+
+### Install
+
+Use the Store to download or install plugins from marketplace. Otherwise create plugin from a template.
 
 - `{plugin}.xml`  : The client XML grammar
+- `{plugin}_en_US.xml` : The client XML grammar in english
 - `{plugin}.js`   : The server script
 - `{plugin}.prop` : The script properties 
-- `portlet.html`  : Custom portlet template
-- `index.html`    : Custom documentation opened in a modal
+
+#### Plugin's Server libraries
+
+- `node_modules/` : All the nodejs custom libraries (use NPM) 
+
+#### Plugin's WWW
+
+- `portlet.ejs`  : Custom portlet template
+- `index.ejs`    : Custom documentation opened in a modal
+- `{plugin}.ejs`  : Custom dynamic webpage
+- `www/`          : Contains all web resources served as static files
+
+#### Plugin's locale
+
+- `locales/`      : All the translations
 - `locales/en.js` : English translations for i18n()
 - `locales/fr.js` : French translation for i18n()
 
 
-### Install
-
-TBW.
-
 ### Life cycle
 
 TBW.
+
+
+
+### Migration SARAH 3.x to 4.x
+
+All plugin's static web resources MUST be in `/{plugin}/www/*`.
+
+#### {plugin}.js
+
+SARAH and Config are now global variables.
+
+Rename `exports.action(data, callback, config, SARAH)` to `exports.action(data, next)`. 
+(In JavaScript function parameter can be named as you want)
+
+#### portlet.ejs
+
+The `portlet.ejs` will replace `portlet.html`. Name is different for backward compatibility.
+The `portlet_back.html` is no more...
+
+#### index.ejs
+
+The `index.ejs` will replace `index.html`. Name is different for backward compatibility.
+It's now a modal ! Bootstrap grid is no longer required. Use &lt;h3&gt; and &lt;h4&gt; for title. 
+
+#### {plugin}.css
+
+Portal DOM has changed. There is no more gridster. SARAH v4.x provides LESS compilator.
+The `/www/less/{plugin}.less` will replace the `{plugin}.css`. 
+
+#### {plugin}.xml
+
+- Remove &lt;example&gt; tags that are now a new way to speak using `SARAH.asknext()`.
+- Remove weight no longer relevant
+- There is to DTD: `semantics/1.0` and `semantics-ms/1.0` the first one use `out.*` the second use `$.` It seems to be the same code but `semantics-ms` may have access to windows built-in grammars... 
 
 ## Profile Manager
 

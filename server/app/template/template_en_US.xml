@@ -1,0 +1,11 @@
+﻿<grammar version="1.0" xml:lang="en-US" mode="voice"  root="ruleTemplate" xmlns="http://www.w3.org/2001/06/grammar" tag-format="semantics/1.0">
+  <rule id="ruleTemplate" scope="public">
+    <tag>out.action=new Object(); </tag>
+    <item>Sarah</item>
+    <one-of>
+      <item>what time is it</item>
+      <item>give me the time</item>
+    </one-of>
+    <tag>out.action._attributes.uri="http://127.0.0.1:8080/sarah/template";</tag>
+  </rule>
+</grammar>

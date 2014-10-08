@@ -61,8 +61,10 @@ var COOKIE = 'sarah-lang'
 var Router = express.Router();
 
 // Set lang according to cookie
-Router.get('/*', function(req, res, next) {
-  l10n.setLocale(req.cookies[COOKIE] || 'fr');
+Router.get('*', function(req, res, next) {
+  var lang = req.cookies[COOKIE] || 'fr';
+  l10n.setLocale(lang);
+  res.locals.lang = lang;
   next();
 })
 

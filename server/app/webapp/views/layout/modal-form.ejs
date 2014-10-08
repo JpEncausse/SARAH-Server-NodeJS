@@ -9,7 +9,7 @@
       </div>
 
       <div class="modal-body">
-        <% if (message === true){ %><script>document.location = document.location;</script><%- i18n('modal.'+message) -%>
+        <% if (message === true){ %><script>document.location.reload();</script><%- i18n('modal.'+message) -%>
         <% } else if (message) { %><div class="alert alert-info" role="alert"><%- i18n('modal.'+message) -%></div><% } %>
         <%- body -%>
       </div>
@@ -22,4 +22,6 @@
     </form>
     </div>
   </div>
+  <%- scripts -%>
+  <%- stylesheets -%>
 </div>
