@@ -1,11 +1,13 @@
 <% layout('page.ejs') -%>
+<% stylesheet('/sarah/less/component.css') %>
 <% stylesheet('/sarah/less/layout.css') %>
+
 <% script('/sarah/js/layout.js') %>
 
 <div class="row" id="layout">
 	<div class="col-md-2 hidden-print hidden-xs hidden-sm" id="sidebar">
-	  <h2><script>document.write(moment().format("HH:mm"));</script></h2>
-  
+	  <h2><span id="time-now"></span></h2>
+
     <p class="split text-center">
       <a href="/" class="btn btn-lg btn-danger"><%- i18n('nav.home') -%></a>
       <br/><small><%- i18n('nav.version') -%> <%= Config.bot.version %></small>

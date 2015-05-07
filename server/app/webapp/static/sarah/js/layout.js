@@ -31,11 +31,46 @@
   // ------------------------------------------
   
   var register = function(){
+    
+    // Set currenttime
+    $('#time-now').html(moment().format("HH:mm"));
+    
     registerTabs();
     registerConfirm();
     registerModal();
     registerAjax();
     registerSwitch();
+    registerTokenField();
+    registerDate();
+    registerSortable();
+  }
+  
+  // ------------------------------------------
+  //  TOKENFIELD
+  // ------------------------------------------
+  
+  var registerTokenField = function(){
+    setupTokens();
+    $(document).on('ajax:refresh', function(event){
+      setupTokens(event.refresh.$target);
+    });
+  }
+  
+  var setupTokens = function($wrapper){
+    var $wrapper = $wrapper || $(document);
+    $wrapper.find('.tokenfield').tokenfield();
+  }
+  
+  // ------------------------------------------
+  //  SORTABLE
+  // ------------------------------------------
+  
+  var registerSortable = function(){
+    $("OL.drag-x, OL.drag-y").sortable({ vertical : true, nested : false, exclude : '.switch' });
+    
+    $(document).on('ajax:refresh', function(event){
+      event.refresh.$target.find("OL.drag-x, OL.drag-y").sortable({ vertical : true, nested : false, exclude : '.switch' });
+    });
   }
   
   // ------------------------------------------
@@ -43,7 +78,15 @@
   // ------------------------------------------
   
   var registerSwitch = function(){
-    $(".switch").bootstrapSwitch();
+    setupSwitch();
+    $(document).on('ajax:refresh', function(event){
+      setupSwitch(event.refresh.$target);
+    });
+  }
+  
+  var setupSwitch = function($wrapper){
+    var $wrapper = $wrapper || $(document);
+    $wrapper.find(".switch").bootstrapSwitch();
   }
   
   // ------------------------------------------
@@ -142,6 +185,25 @@
     });
   }
   
+  
+    
+  // ------------------------------------------
+  //  DATEPICKER
+  // ------------------------------------------
+  
+  var registerDate = function(){
+    setupDateChooser();
+    $(document).on('ajax:refresh', setupDateChooser);
+  }
+  
+  var setupDateChooser = function(){
+    $('DIV[data-field-date]').each(function(){
+      var $elm = $(this);
+      $elm.datetimepicker({ pickTime: false })
+      $elm.data("DateTimePicker").setDate($elm.attr('data-field-date'));
+    });
+  }
+  
   // ------------------------------------------
   //  AJAX
   // ------------------------------------------
@@ -159,7 +221,7 @@
     var $trigger = $(trigger);
     var url = $trigger.attr('href') || $trigger.attr('data-url');
     var method = 'GET';
-    var params = {};
+    var params = {'ajax' : 'true'};
 
     // Handle forms
     if (!url && trigger.form){
@@ -187,9 +249,19 @@
         location.reload(); 
         return; 
       }
+
+      var content = clean(html);
+      if (content){
+        $target.html(content.body);
+        $target.attr('class', content.$wrapper.attr('class'));
+      }
       
-      var html = clean(html);
-      $target.html(html);
+      // Fire pseudo event
+      var event = $.Event("ajax:refresh");
+      event.refresh         = {};
+      event.refresh.$target = $target;
+      $(document).trigger(event);
+      
       if (callback) callback();
     }, method);
   }
@@ -207,18 +279,24 @@
     request.done(function(html) {
       if (callback) callback(html);
     });
+    
+    // Handle Error
+    request.fail(function( jqXHR, textStatus, errorThrown ) {
+      console.log(textStatus, errorThrown);
+    });
   }
   
   var clean = function(html){
     html = html.trim();
     var patternDIV = new RegExp('^(<div[^>]*ajax-body[^>]*>)(.*)','gi');
     var mtch = patternDIV.exec(html);
-    if (!mtch){ return ''; }
+    if (!mtch){ return false; }
 
-    $wrap = $(mtch[1]+'</div>');
+    var $wrap = $(mtch[1]+'</div>');
+    
     html = html.replace(patternDIV, '$2');
     html = html.substring(0, html.lastIndexOf("</div>"));
-    return html;
+    return { 'body' : html , '$wrapper' : $wrap };
   }
 
   // ------------------------------------------
@@ -232,6 +310,7 @@
   
   $.SARAH = $.SARAH || {};
   $.SARAH.ajax = ajax;
+  $.SARAH.refresh = refresh;
   
 }(jQuery);
     

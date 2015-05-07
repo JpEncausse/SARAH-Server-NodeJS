@@ -5,7 +5,17 @@
 <% script('/codemirror/mode/javascript.js') %>
 <% script('/codemirror/mode/xml.js') %>
 
-<div class="alert alert-info" role="alert" style="margin-bottom: 30px;"><%- i18n('modal.rules.script.h') -%></div>
+
+<div class="alert alert-info" role="alert" style="margin-bottom: 30px;">
+<p><%- i18n('modal.rules.script.h') -%></p>
+<pre style="margin: 10px 0px 0px 0px;">
+if (data.param1 == 'value1'){
+  SARAH.speak('lorem ipsum');
+  data.param2 = 'value2'; // Will be available in THEN script
+}
+</pre>
+</div>
+
 <div class="modal-stick" style="border-top: 1px solid #e5e5e5;">
 <textarea id="codearea"></textarea>
 </div>

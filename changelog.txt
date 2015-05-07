@@ -1,4 +1,4 @@
-﻿v4.0.0 - ??/??/2014 
+﻿v4.0.0 - ??/??/2015
 =================
 
 - [X] SERVER: FULL Rewrite of core JS
@@ -35,6 +35,22 @@
 - [X] SERVER: Fix custom.prop JSON format (2 spaces for readability)
 - [X] SERVER: If tts === answer then return random answer
 - [X] SERVER: Fix before/after rules and way to run sub script
+- [X] SERVER: Fix backward compatibility on init() and release() 
+- [X] SERVER: New Motion plugin to be used in rules
+- [X] SERVER: No longer support custom icon in rule engines (we use glyphes now)
+- [X] SERVER: Normalize: error in callback({"error" : "There is an error"})
+- [X] SERVER: Add page for server parameters
+- [X] SERVER: Add new OAuth2 authentication with Google (for Google Calendar)
+- [X] SERVER: Add Bootstrap DatePicker (https://github.com/Eonasdan/bootstrap-datetimepicker)
+- [X] SERVER: Upgrade packery to v1.3.2 and draggabilly to 1.1.2
+- [X] SERVER: New plugin WebSocket to help get started
+- [X] SERVER: Add library moment-timezone
+- [X] SERVER: Add JSON Body parser 
+- [X] SERVER: Forward body data to plugins
+- [X] SERVER: Implements last() another way ...
+- [X] SERVER: Add jQuery Sortable (http://johnny.github.io/jquery-sortable/)
+- [X] SERVER: Add jQuery Tokenfield (http://sliptree.github.io/bootstrap-tokenfield/)
+- [X] SERVER: add lastContext to ScriptManager to retrieve last params and SARAH who query 
 
 - [X] CLIENT: FULL Rewrite of core C#
 - [X] CLIENT: New AddOn framework
@@ -43,6 +59,29 @@
 - [X] CLIENT: Speech: Update full XML of a Grammar 
 - [X] CLIENT: Speech: AskNext: TTS a ruleId <example> 
 - [X] CLIENT: Picture: no longer return  "image/jpeg" file
+- [X] CLIENT: Do not listen while speaking
+- [X] CLIENT: Kinect2 Gesture Recognition using Machine Learning
+- [X] CLIENT: Add custom parameters to all requests (for multiple clients)
+- [X] CLIENT: Command line can override any custom.ini values
+- [X] CLIENT: Add confidence on gestures
+- [X] CLIENT: Add global HotKey behavior mechanism
+- [X] CLIENT: Add gamepad management
+- [X] CLIENT: Catch All Process Errors and display dialog
+- [X] CLIENT: Catch WaveOut Exception (Not Listening)
+- [X] CLIENT: Allow audio delay for bluetooth devices
+- [X] CLIENT: Implement Emulate with dummy speech engine (and quiet mode)
+- [X] CLIENT: BUG with Gesture on my computer ... 2015 ?
+- [X] CLIENT: New AddOn WebSocket on port 7777 sending back head/left/right
+- [X] CLIENT: Add AddOn for OLD Speech API (for people that always complains)
+- [X] CLIENT: Fix AskMe with multiplication plugin
+- [X] CLIENT: Try/Catch all AddOns Exception (should catch IO Exception)
+- [X] CLIENT: Handle a list of Microphone
+- [X] CLIENT: Display and choose SpeechRecognition engine
+
+- [X] BOTH:   An SFX WinRAR installer
+- [X] BOTH:   new GitHub documentation (thanks  Aymeric DMVD)
+- [X] BOTH:   Improve documentation (include marketplace)
+- [X] BOTH:   Rewrite marketplace (add to documentation)
 
 v3.1.5 - 18/05/2014
 =================

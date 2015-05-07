@@ -1,3 +1,4 @@
+
 <ul class="nav nav-pills nav-stacked">
 <% for (var i = 0; i < items.length; i++) { %>
   <li <%- items[i].active ? "class='active'" : "" -%>><a href="<%- items[i].url -%>" ><%- i18n(items[i].name) -%></a></li>

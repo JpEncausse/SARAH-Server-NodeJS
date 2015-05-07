@@ -23,7 +23,7 @@ var dispatch = function(name, data, callback){
 }
 
 var iterate = function(name, data, i){
-
+  var options = data; // backward compatibility
   var rules = Config.rules;
   if (!rules){ return false; }
   
@@ -32,7 +32,7 @@ var iterate = function(name, data, i){
       var rule = rules[i];
       if (rule['disabled']){ continue; }
       if (rule['if'] != name){ continue; }
-      if (rule['script']){ decode(eval(rule['script'])); }
+      if (rule['script']){ eval(decode(rule['script'])); }
       if (!rule['then']){ continue; }
       
       info('iterate ', i, rule);
@@ -50,7 +50,7 @@ var iterate = function(name, data, i){
       });
       
     } catch(ex) { 
-      warn('Rule %s: %s', name, rule, ex); 
+      warn('Rule %s:', name, rule, ex); 
       iterate(name, data, i+1);
     }
   }

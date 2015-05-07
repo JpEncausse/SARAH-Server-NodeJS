@@ -16,7 +16,8 @@ var init = function(){
   
   SARAH.ConfigManager  = require('./config.js').init();
   SARAH.PluginManager  = require('./plugin.js').init();
-  SARAH.LangManager    = require('./lang.js'  ).init();
+  SARAH.LangManager    = require('./lang.js').init();
+  SARAH.PrivacyManager = require('./privacy.js').init();
   SARAH.PortalManager  = require('./portal.js').init();
   SARAH.ScriptManager  = require('./script.js').init();
   SARAH.RuleEngine     = require('./rules.js').init();
@@ -25,7 +26,6 @@ var init = function(){
   SARAH.Marketplace    = require('./marketplace.js').init();
   
   /*
-  SARAH.RuleManager    = require('./rules.js').init();
   SARAH.PhantomManager = require('./phantom.js').init();
   */
   
@@ -68,11 +68,11 @@ var getRSSFeed = function(url, cache){
 //  ASKME
 // ------------------------------------------
 
-var options = false;
+var ASKME = false;
 var stack = [];
 
 var end = function(){ 
-  options = false;  next(); 
+  ASKME = false;  next(); 
 }
 
 var next = function(){
@@ -83,41 +83,44 @@ var next = function(){
   askme(args[0], args[1], args[2], args[3])
 }
 
-var askme = function(tts, grammar, timeout, callback){
+var askme = function(tts, grammar, timeout, callback, wrong){
   if (!grammar) { return; }
   if (!callback){ return; }
-  if (options)  { return stack.push(arguments); }
+  if (ASKME)  { return stack.push(arguments); }
   
   // Build request
-  info('AskMe', options);
-  options = { 'sentences':[], 'tags':[] }
-  if (tts) options.tts = tts;
+  info('AskMe', ASKME);
+  ASKME = { 'sentences':[], 'tags':[] }
+  if (tts){ 
+    ASKME.tts = tts;
+    ASKME.sync = true;
+    ASKME.wrong = wrong;
+  }
   for (var g in grammar){
-    options.sentences.push(g);
-    options.tags.push(grammar[g]);
+    ASKME.sentences.push(g);
+    ASKME.tags.push(grammar[g]);
   }
   
   // Send request
-  remote(options);
+  remote(ASKME);
   
   // Backup
-  options.rule     = grammar
-  options.callback = callback;
-  options.token    = setTimeout(function(){
-      options = false;
-      if (timeout <= 0){
-        callback(false, end);
-      } else {
-        SARAH.askme(tts, grammar, 0, callback);
-      }
+  ASKME.rule     = grammar
+  ASKME.callback = callback;
+  ASKME.token    = setTimeout(function(){
+    ASKME = false;
+    if (timeout <= 0){
+      callback(false, end);
+    } else {
+      SARAH.askme(tts, grammar, 0, callback);
+    }
   }, timeout || 16000);
 }
 
-var answerme = function(req, res, next){
-  if (!options){ return; }
-  if (options.token){ clearTimeout(options.token); }
-  res.end();
-  options.callback(req.param('dictation') || req.param('tag'), end);
+var answerme = function(req, res, next){ res.end();
+  if (!ASKME){ return; }
+  if (ASKME.token){ clearTimeout(ASKME.token); }
+  ASKME.callback(req.param('dictation') || req.param('tag'), end);
 }
 
 // ------------------------------------------
@@ -126,11 +129,12 @@ var answerme = function(req, res, next){
 
 var Router = express.Router();
 
-Router.all('/sarah/:name', function(req, res, next) { 
-  
+Router.all('/sarah/:name', function(req, res, next) {
+
   var name = req.params.name;
   var options = {};
   extend(true, options, req.query);
+  extend(true, options, req.body);
   
   // 1. Log action into rule engine
   var entry = SARAH.RuleEngine.log(name, options);
@@ -138,7 +142,17 @@ Router.all('/sarah/:name', function(req, res, next) {
   
   // 3. Send back TTS
   var callback = function(data){
-    res.writeHead(200, {'Content-Type': 'text/html; charset=utf-8'});
+    
+    // Redirect to portlet (no rules, asknect, ...)
+    if (req.query.ajax){
+      res.redirect('/plugin/'+name);
+      return;
+    }
+    
+    //res.writeHead(200, {'Content-Type': 'text/html; charset=utf-8'});
+    if (!res.headersSent){
+      res.set({'Content-Type': 'text/html; charset=utf-8'});
+    }
     
     // Speak
     if (data && data.tts){
@@ -146,7 +160,7 @@ Router.all('/sarah/:name', function(req, res, next) {
       if (tts){ res.write(tts); }
     }
     
-    res.end(); 
+    res.status(200).end();
     
     // Ask next from data
     if (data && data.asknext){
@@ -166,7 +180,7 @@ Router.all('/sarah/:name', function(req, res, next) {
   }
   
   // 2. Run plugin's script
-  SARAH.run(name, options, callback);
+  SARAH.run(name, options, callback, true);
 });
 
 Router.all('/standby', function(req, res, next) { 

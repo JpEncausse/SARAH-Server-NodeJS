@@ -109,9 +109,14 @@ var session = require('express-session');
 
 app.use(multer({ dest:  __webapp+'/uploads' }))
 app.use(methodOverride('X-HTTP-Method-Override'));
+app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(session({ secret: 'sarah' }));
+app.use(session({ 
+  secret: 'sarah',
+  resave: true,
+  saveUninitialized: true
+}));
 
 // Set local helpers
 app.locals.SARAH = SARAH;
@@ -126,7 +131,23 @@ app.use(serveStatic(__webapp + '/static'));
 //  ROUTERS
 // ==========================================
 
+
+var static_plugins = serveStatic(SARAH.ConfigManager.PLUGIN);
+app.use(function(req, res, next){
+  var path = req.path
+  if (/^(\/plugin)*\/\w+\/www\/.*$/.test(path)){
+    if (path.startsWith('/plugin')){
+      res.redirect(path.substring('/plugin'.length));
+      return res.end();
+    }
+    static_plugins(req, res, next);
+  } else {
+    next();
+  }
+});
+
 app.use(SARAH.LangManager.Router);
+app.use(SARAH.PrivacyManager.Router);
 app.use(SARAH.PortalManager.Router);
 app.use(SARAH.ConfigManager.Router);
 app.use(SARAH.PluginManager.Router);
@@ -135,15 +156,6 @@ app.use(SARAH.RuleEngine.Router);
 app.use(SARAH.Marketplace.Router);
 app.use(SARAH.Router);
 
-var static_plugins = serveStatic(SARAH.ConfigManager.PLUGIN);
-app.use(function(req, res, next){
-  var path = req.path
-  if (/^\/\w+\/www\/.*$/.test(path)){
-    static_plugins(req, res, next);
-  } else {
-    next();
-  }
-});
 
 // ==========================================
 //  START CRON

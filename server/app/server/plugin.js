@@ -116,7 +116,7 @@ Plugin.prototype.getInstance = function(uncache){
   try {
     // Dispose
     if (Config.debug || uncache){ 
-      if (this._script && this._script.dispose){ this._script.dispose(); }
+      if (this._script && this._script.dispose){ this._script.dispose(SARAH); }
       require.uncache(this.script); 
     }
     
@@ -126,7 +126,7 @@ Plugin.prototype.getInstance = function(uncache){
     // Initialise
     if (!this._script.initialized){
       this._script.initialized = true;
-      if (this._script.init){ this._script.init(); }
+      if (this._script.init){ this._script.init(SARAH); }
     }
     
     // Last Modified
@@ -144,7 +144,7 @@ Plugin.prototype.getInstance = function(uncache){
     return this._script;
   } 
   catch (ex) { 
-    warn('Error while loading plugin: ', ex.message);
+    warn('Error while loading plugin: %s', this.name, ex.message);
   }
 }
 
@@ -317,8 +317,12 @@ Router.post('/plugin/config/:name', function(req, res, next) {
   for(var i   = 0 ; i < keys.length ; i++){
     var key   = keys[i];
     var value = Helper.parse(req.body[key]);
-    var pfx   = key.substring(0, key.indexOf('.'));
+    var pfx   = key.substring(0, key.indexOf('.'));  
     var prop  = key.substring(key.indexOf('.')+1);
+    
+    // skip internal parameter like ajax 
+    if (!pfx) continue;
+    
     info('[%s] %s.%s.%s = %s',key, pfx, name, prop, value);
     Config[pfx][name][prop] = value;
   }
@@ -344,15 +348,21 @@ Router.all('/plugin/sort', function(req, res, next) {
   res.end();
 });
 
-Router.all('/plugin/:name/:path*', function(req, res, next) { 
+Router.all('/plugin/:name/*', function(req, res, next) {
   var name   = req.params.name;
   var plugin = find(name);
   if (!plugin) return res.end();
   
-  var path = req.params.path
+  var path = req.params[0];
   if (!path) return res.end();
   
-  res.render(SARAH.ConfigManager.PLUGIN+'/'+name+'/'+path, { "plugin" : plugin});
+  try {
+    var fullpath = SARAH.ConfigManager.PLUGIN+'/'+name+'/'+path;
+    res.render(fullpath, { "plugin" : plugin, "title" : (req.query.title || req.body.title || "") });
+  } 
+  catch (ex){ 
+    warn('Error' , fullpath, ex.stack); 
+  }
 });
 
 Router.all('/plugin/:name*', function(req, res, next) { 

@@ -1,6 +1,6 @@
-<%- partial('../layout/field.ejs', { 
+<%- partial('../layout/field.ejs', { field: { 
 		  'name' : prefix+'.'+key, 
 		  'value' : value,
 		  'label' : i18n('plugin.'+name+'.'+key, i18n('plugin.'+key, key))
-    }) 
+    }}) 
 -%>

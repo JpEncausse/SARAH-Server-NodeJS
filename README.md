@@ -54,12 +54,17 @@ This page describe Server's Core/Module specification. SARAH developers should s
 - feedparser      (https://github.com/danmactough/node-feedparser)
 - ent             (https://github.com/substack/node-ent)
 - nedb            (https://github.com/louischatriot/nedb)
-- scraperjs ???   (https://github.com/ruipgil/scraperjs)
 - zone ???        (https://github.com/nodeloop/zone) => broken
 - passport        (https://github.com/jaredhanson/passport)
 - unzip           (https://github.com/EvanOxfeld/node-unzip)
 - fs-extra        (https://github.com/jprichardson/node-fs-extra)
 - cron            (https://github.com/ncb000gt/node-cron)
+- scraperjs       (https://github.com/ruipgil/scraperjs)
+- sax             (https://github.com/isaacs/sax-js)
+- cheerio         (https://github.com/cheeriojs/cheerio)
+- emailjs         (https://github.com/eleith/emailjs)
+- resanitize      (https://github.com/danmactough/node-resanitize)
+- xml2js          (https://github.com/Leonidas-from-XIV/node-xml2js)
 
 
 ### ExpressJS
@@ -137,11 +142,12 @@ Portal Manager handle all Web GUI features. It also handle the Dashboard.
 - jquery 3.11.1    (http://jquery.com/)
 - bootstrap 3.2.0  (https://github.com/twbs/bootstrap)
 - bootstrap-switch (http://www.bootstrap-switch.org/)
-- packery 1.2.3    (https://github.com/metafizzy/packery)
+- packery 1.3.2    (https://github.com/metafizzy/packery)
 - moment 2.8.1     (https://github.com/moment/moment)
 - famfamfam flags  (http://www.famfamfam.com/lab/icons/flags/)
 - sparkline        (https://github.com/gwatts/jquery.sparkline)
 - codemirror 4.6   (http://codemirror.net/)
+- jQuery Sortable  (http://johnny.github.io/jquery-sortable/)
 
 ### Layouts
 

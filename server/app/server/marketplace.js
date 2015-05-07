@@ -66,7 +66,7 @@ var filter = function(name, plugin, search){
 // ------------------------------------------
 
 var install = function(name, callback){
-  var market = cache[name];
+  var market = cache[name]; console.log(market);
   if (!market || !market.dl){ return callback(); }
   
   // Delete previous zip if exists
@@ -130,14 +130,14 @@ var create = function(body, callback){
   
   // Clean files
   if (!Helper.parse(body.locales)){
-    fs.removeSync(dst+'/locales');
-    fs.removeSync(dst+'/template_en_US.xml');
+    try { fs.removeSync(dst+'/locales');            } catch(e){}
+    try { fs.removeSync(dst+'/template_en_US.xml'); } catch(e){}
   }
   if (!Helper.parse(body.www)){
-    fs.removeSync(dst+'/www');
-    fs.removeSync(dst+'/portlet.ejs');
-    fs.removeSync(dst+'/index.ejs');
-    fs.removeSync(dst+'/template.ejs');
+    try { fs.removeSync(dst+'/www');          } catch(e){}
+    try { fs.removeSync(dst+'/portlet.ejs');  } catch(e){}
+    try { fs.removeSync(dst+'/index.ejs');    } catch(e){}
+    try { fs.removeSync(dst+'/template.ejs'); } catch(e){}
   }
   
   // Search/Replace

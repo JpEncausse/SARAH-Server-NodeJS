@@ -28,9 +28,11 @@ var init = function(){
 //  CONFIG
 // ------------------------------------------
 var path   = require('path');
-var ROOT   = path.normalize(__dirname+'/..'); 
+var ROOT   = path.normalize(__dirname+'/..');
+
 var SERVER = path.normalize(ROOT+'/server/server.prop');
 var PLUGIN = process.env.PATH_PLUGINS || path.normalize(ROOT+'/plugins');
+var VIEW   = path.normalize(ROOT+'/webapp/views');
 var CUSTOM = path.normalize(ROOT+'/data/custom.prop');
 
 info('ROOT', ROOT, '\nSERVER', SERVER, '\nPLUGIN', PLUGIN);
@@ -138,6 +140,19 @@ var loadJSON = function(name){
 //  SAVE
 // ------------------------------------------
 
+var setProperty = function(keys, value, json){
+  var config = json || Config;
+  var keys = keys.split('.');
+  for (var k in keys){
+    var key = keys[k];
+    if (typeof config[key] === 'object' ){
+      config = config[key];
+    } else {
+      config[key] = value;
+    }
+  }
+}
+
 var save = function(cfg) {
   try {
     Config = cfg || Config;
@@ -158,6 +173,20 @@ var save = function(cfg) {
 
 var Router = express.Router();
 
+Router.get('/portal/config', function(req, res, next) {
+  res.render('portal/config.ejs');
+});
+
+Router.post('/portal/config', function(req, res, next) {
+  var keys    = Object.keys(req.body);
+  for(var i   = 0 ; i < keys.length ; i++){
+    var key   = keys[i];
+    var value = Helper.parse(req.body[key]);
+    setProperty(key, value);
+  }
+  SARAH.ConfigManager.save();
+  res.redirect('/portal/config');
+});
 
 // ------------------------------------------
 //  PUBLIC
@@ -169,11 +198,12 @@ var ConfigManager = {
   'save'   : save,
   
   'loadJSON' : loadJSON,
-  
+  'getConfig': function(){ warn('getConfig is deprecated for SARAH 4.x, use global Config'); return Config; },
   'Router' : Router,
   'Config' : Config,
   'PLUGIN' : PLUGIN,
-  'ROOT'   : ROOT
+  'ROOT'   : ROOT,
+  'VIEW'   : VIEW
 }
 
 // Exports Manager

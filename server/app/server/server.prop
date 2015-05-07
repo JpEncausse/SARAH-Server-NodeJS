@@ -12,15 +12,36 @@
     "remote"    : "http://127.0.0.1:8888",
     "upload"    : "E:\\Dropbox\\Public\\[FIXME]\\",
     "timeout"   : 4000,
-    "proxy"     : false,
+    "proxy"     : "",
     "phantom"   : ""
   },
   
-  "auth" : {
-    "users"     : false
+  "auth": {
+    "username"      : "admin", 
+    "password"      : "", 
+    "displayName"   : "Administrateur",
+    "google-key"        : "",
+    "google-secret"     : "",
+    "google-refresh"    : "",
+    "google-services"   : "openid|email|https://www.googleapis.com/auth/calendar"
   },
   
   "phantoms" : { },
   "cron"     : { },
-  "modules"  : { }
+  "modules"  : { },
+  
+  "rules": [
+    {
+      "if": "before",
+      "then": "",
+      "script": "",
+      "disabled": false
+    },
+    {
+      "if": "after",
+      "then": "",
+      "script": "",
+      "disabled": false
+    }
+  ]
 }

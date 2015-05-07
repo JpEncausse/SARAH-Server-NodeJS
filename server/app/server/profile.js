@@ -15,19 +15,17 @@ var init = function(){
   return ProfileManager;
 }
 
-
 // ------------------------------------------
 //  ROUTER
 // ------------------------------------------
 
-var Router = express.Router();
 
-Router.all('/sarah/:name', function(req, res, next) { 
+var updateProfile = function(req, res, next) { 
   
   var name = req.params.name;
   var query   = {}; 
   var profile = {};
-  
+
   var keys = Object.keys(req.query);
   for(var i=0 ; i < keys.length ; i++){
     var key = keys[i];
@@ -40,8 +38,8 @@ Router.all('/sarah/:name', function(req, res, next) {
     
     profile[key.substring(8)] = parse(value);
   }
-  
-  if (profile.face){ 
+
+  if (profile.face){
     
     // Merge previous with new profile
     var previous = Profile[profile.face];
@@ -60,7 +58,7 @@ Router.all('/sarah/:name', function(req, res, next) {
   Profile.last = profile;
   
   next();
-});
+}
 
 var parse = function(str){
   if (str === 'true')  return true;
@@ -68,6 +66,14 @@ var parse = function(str){
   var num = parseInt(str);
   return isNaN(num) ? str : num;
 }
+
+var Router = express.Router();
+
+Router.all('/sarah/:name', updateProfile);
+Router.all('/standby',     updateProfile);
+Router.all('/motion',      updateProfile);
+Router.all('/askme',       updateProfile);
+
 
 // ------------------------------------------
 //  PUBLIC

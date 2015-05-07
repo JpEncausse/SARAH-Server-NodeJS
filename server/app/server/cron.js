@@ -27,7 +27,12 @@ var job = function(plugin) {
   
   // Build callback
   var next = function(data){
-    // Should we speak or asknext here ?
+    if (!data){ return; }
+    if (data.error){ SARAH.speak(tts); }
+    
+    var tts = SARAH.ScriptManager.speak(data.tts);
+    if (tts){ SARAH.speak(tts); }
+    
     SARAH.RuleEngine.dispatch(plugin.name, data);
   }
   

@@ -69,6 +69,10 @@
       
 	  <div class="tab-pane" id="marketplace">
 	  
+	  <div class="alert alert-danger" role="alert">
+	    <%- i18n('store.alert.marketplace') -%>
+	  </div>
+	  
 	  <table class="table table-bordered table-hover table-striped">
       <tr>
         <th><%- i18n('store.plugin.name') -%></th>
@@ -81,6 +85,7 @@
       </tr>
 	    <% for(var key in marketplace){ %>
 	    <% var plugin = marketplace[key]; %>
+	    
 	    <% if (SARAH.Marketplace.filter(key, plugin, req.query.search)){ %>
 	    <tr>
 	      <td class="text-capital"><strong><a href="http://marketplace.sarah.encausse.net/display?name=<%- key -%>"><%- key -%></a></strong></td>
@@ -109,11 +114,11 @@
 	    <div class="alert alert-info" role="alert"><%- i18n(req.query.msg || 'store.alert.new-plugin') -%></div>
 	  
 	    <form class="form-horizontal" method="POST" action="/portal/store" role="form" accept-charset="UTF-8" enctype="multipart/form-data">
-				<%- partial('../layout/field.ejs', { 'name' : 'name',        'label' : 'store.new.name',        'value' : '' })    -%>
-				<%- partial('../layout/field.ejs', { 'name' : 'description', 'label' : 'store.new.description', 'value' : '' })    -%>
-				<%- partial('../layout/field.ejs', { 'name' : 'version',     'label' : 'store.new.version',     'value' : 0.1 })   -%>
-				<%- partial('../layout/field.ejs', { 'name' : 'locales',     'label' : 'store.new.locales',     'value' : false }) -%>
-				<%- partial('../layout/field.ejs', { 'name' : 'www',         'label' : 'store.new.www',         'value' : false }) -%>
+				<%- partial('../layout/field.ejs', { field: { 'name' : 'name',        'label' : 'store.new.name',        'value' : ''    }}) -%>
+				<%- partial('../layout/field.ejs', { field: { 'name' : 'description', 'label' : 'store.new.description', 'value' : ''    }}) -%>
+				<%- partial('../layout/field.ejs', { field: { 'name' : 'version',     'label' : 'store.new.version',     'value' : 0.1   }}) -%>
+				<%- partial('../layout/field.ejs', { field: { 'name' : 'locales',     'label' : 'store.new.locales',     'value' : false }}) -%>
+				<%- partial('../layout/field.ejs', { field: { 'name' : 'www',         'label' : 'store.new.www',         'value' : false }}) -%>
 				<div class="form-group">
           <div class="col-md-8 col-md-offset-3">
             <button type="submit" class="btn btn-primary" name="opCreate" value="true"><%- i18n('store.new.create') -%></button>

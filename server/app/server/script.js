@@ -13,18 +13,28 @@ var init = function(){
 //  RUN / CALL
 // ------------------------------------------
 
-var last = function(){
-  // FIXME
+var last = function(callback){
+  if (_name && _last){
+    run(_name, _last, callback);
+  }
 }
-
-var run = function(name, options, callback){
+var _name, _last;
+var run = function(name, options, callback, backup){
+  
+  // Last Backup
+  if (backup){
+    _name = name; _last = {};
+    extend(true, _last, options);
+    ScriptManager.lastContext = _last; // to be available everywhere
+  }
+  
   var data = {};
   extend(true, data, options);
   
   // 3. Finish by calling back
   var next = function(json){
     if (json){ extend(true, data, json); }
-    callback(data);
+    if (callback) { callback(data); }
   }
   
   // 2. Dispatch to next script
@@ -63,6 +73,10 @@ var call = function(name, options, callback){
           
     var end = (new Date()).getTime();
     info('call('+name+') in ', (end-start)+'ms');
+    
+    if (data && data.error){
+      error('call('+name+') ', data.error);
+    }
     
     if (callback){ callback(data); }
   }
@@ -115,7 +129,7 @@ var standBy = function(motion, device){
   var plugins = SARAH.PluginManager.getList();
   for (var i = 0 ; i < plugins.length ; i++){
     var plugin = plugins[i].getInstance();
-    if (plugin.standBy) plugin.standBy(motion, device);
+    if (plugin && plugin.standBy) plugin.standBy(motion, device);
   }
 }
 
@@ -132,7 +146,7 @@ var speak = function(tts, async){
   var plugins = SARAH.PluginManager.getList();
   for (var i = 0 ; i < plugins.length ; i++){
     var plugin = plugins[i].getInstance();
-    if (plugin.speak){ 
+    if (plugin && plugin.speak){ 
       tts = plugin.speak(tts, async);
     }
   }
@@ -156,7 +170,8 @@ var ScriptManager = {
   'call'     : call,
   'last'     : last,
   'standBy'  : standBy,
-  'speak'    : speak
+  'speak'    : speak,
+  'lastContext' : {}
 }
 
 // Exports Manager
