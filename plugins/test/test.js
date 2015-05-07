@@ -42,13 +42,13 @@ exports.action = function(data, next){
   // Called by SARAH to perform main action
   
   info('Plugin TEST is actioned ...');
-  console.log(data);
+  console.log('Last profile:', Profile, Profile.last);
   
   // This is a synchronize speech (async have no callback)
-  SARAH.speak('Bonjour !', function(){
+  //SARAH.speak('Bonjour !', function(){
     // with next step here
-    console.log('After the speech');  
-  });
+  //  console.log('After the speech');  
+  //});
   
   // The function next() MUST be called when job is done, 
   // with relevant data for next plugin and caller.

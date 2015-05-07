@@ -227,3 +227,5 @@ server/app/node_modules/
 server/app/data/custom.prop*
 plugins/
 
+/toolkit/
+/.gitignore

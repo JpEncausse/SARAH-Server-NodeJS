@@ -1,0 +1,54 @@
+<% layout('../layout/layout.ejs') -%>
+<% stylesheet('/sarah/less/config.css') %>
+
+<div id="config">
+
+	<h1><%- i18n('portal.config') -%></h1>
+	
+	<div class="alert alert-success" role="alert"><%- i18n('config.alert.restart') -%></div>
+	
+	<form class="form-horizontal" method="POST" action="/portal/config" role="form" accept-charset="UTF-8" enctype="multipart/form-data">
+	
+		<ul class="nav nav-tabs" role="tablist" id="config_list">
+		  <li class="active"><a href="#bot"  role="tab" data-toggle="tab"><%- i18n('config.bot') -%></a></li>
+		  <li>               <a href="#http" role="tab" data-toggle="tab"><%- i18n('config.http') -%></a></li>
+		  <li>               <a href="#auth" role="tab" data-toggle="tab"><%- i18n('config.authentication') -%></a></li>
+      <li class="pull-right"><button type="submit" id="opSave" name="opSave" class="btn btn-danger" value="true"><%- i18n("config.save") -%></button></li>
+		</ul>
+	
+		<div class="tab-content">
+		  <div class="tab-pane active" id="bot">
+			  <% for (var key in Config.bot) { %>
+			  <%- partial('../layout/field.ejs', { field: { 'name' : 'bot.'+key, 'label' : 'config.bot.'+key, 'value' : Config.bot[key] }})    -%>
+			  <% } %>
+		  </div>
+		  <div class="tab-pane" id="http">
+	      <% for (var key in Config.http) { %>
+	      <%- partial('../layout/field.ejs', { field: { 'name' : 'http.'+key, 'label' : 'config.http.'+key, 'value' : Config.http[key] }})    -%>
+	      <% } %>
+		  </div>
+		  <div class="tab-pane" id="auth">
+	      <% for (var key in Config.auth) { %>
+	      <% if (key.startsWith('google')) continue; %>
+	      <%- partial('../layout/field.ejs', { field: { 'name' : 'auth.'+key, 'label' : 'config.auth.'+key, 'value' : Config.auth[key] }})    -%>
+	      <% } %>
+	      
+	      <h3><%- i18n('config.auth.google') -%></h3>
+	      <div class="alert alert-info" role="alert"><%- i18n('config.auth.google.h') -%></div> 
+	      <% for (var key in Config.auth) { %>
+	      <% if (!key.startsWith('google')) continue; %>
+	      <%- partial('../layout/field.ejs', { field: { 'name' : 'auth.'+key, 'label' : 'config.auth.'+key, 'value' : Config.auth[key] }})    -%>
+	      <% } %>
+	      
+	      <div class="form-group">
+          <div class="col-md-8 col-md-offset-3">
+            <a href="/auth" class="btn btn-primary"><%- i18n('config.auth.google.generate') -%></a>
+          </div>
+        </div>
+        
+        <div class="text-right"><img src="/sarah/assets/googleapi.jpg"/></div>
+		  </div>
+		</div>
+  </form>
+  
+</div>
