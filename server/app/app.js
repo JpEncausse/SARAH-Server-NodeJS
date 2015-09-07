@@ -141,10 +141,10 @@ app.use(function(req, res, next){
       return res.end();
     }
     static_plugins(req, res, next);
-  } else {
-    next();
-  }
+  } 
+  else { next(); }
 });
+
 
 app.use(SARAH.LangManager.Router);
 app.use(SARAH.PrivacyManager.Router);

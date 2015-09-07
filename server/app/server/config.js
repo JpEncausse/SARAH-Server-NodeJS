@@ -31,11 +31,13 @@ var path   = require('path');
 var ROOT   = path.normalize(__dirname+'/..');
 
 var SERVER = path.normalize(ROOT+'/server/server.prop');
-var PLUGIN = process.env.PATH_PLUGINS || path.normalize(ROOT+'/plugins');
+var PLUGIN = process.env.PATH_PLUGINS || path.normalize(ROOT+'/../../plugins');
 var VIEW   = path.normalize(ROOT+'/webapp/views');
 var CUSTOM = path.normalize(ROOT+'/data/custom.prop');
 
 info('ROOT', ROOT, '\nSERVER', SERVER, '\nPLUGIN', PLUGIN);
+
+info('NODE_PATH', module.paths);
 
 var Config = { 'debug' : false };
 var load = function(){

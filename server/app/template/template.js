@@ -52,5 +52,5 @@ exports.speak = function(tts, async){
 exports.standBy = function(motion, device){
   // Hook called for each motion in a given device
   // to start/stop action when there is no moves
-  //info('Motion on %s: %s', device, motion);
+  // info('Motion on %s: %s', device, motion);
 }

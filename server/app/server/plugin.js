@@ -144,7 +144,7 @@ Plugin.prototype.getInstance = function(uncache){
     return this._script;
   } 
   catch (ex) { 
-    warn('Error while loading plugin: %s', this.name, ex.message);
+    warn('Error while loading plugin: %s', this.name, ex.message, ex.stack);
   }
 }
 
@@ -358,7 +358,11 @@ Router.all('/plugin/:name/*', function(req, res, next) {
   
   try {
     var fullpath = SARAH.ConfigManager.PLUGIN+'/'+name+'/'+path;
-    res.render(fullpath, { "plugin" : plugin, "title" : (req.query.title || req.body.title || "") });
+    if (fs.existsSync(fullpath)){ 
+      res.render(fullpath, { "plugin" : plugin, "title" : (req.query.title || req.body.title || "") });
+    } else {
+      warn('path not found:', fullpath);
+    }
   } 
   catch (ex){ 
     warn('Error' , fullpath, ex.stack); 
@@ -376,6 +380,17 @@ Router.all('/plugin/:name*', function(req, res, next) {
   var instance = plugin.getInstance();
   if (instance.ajax){ instance.ajax(req, res, render); } else { render(); }
 });
+
+Router.all('/static/:name/*', function(req, res, next) { 
+  var plugin = find(req.params.name);
+  if (!plugin) return res.end();
+  
+  var instance = plugin.getInstance();
+  if (instance.route) { 
+    instance.route(req, res, next); 
+  } else { next(); }
+});
+
 
 // ------------------------------------------
 //  PUBLIC

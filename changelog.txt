@@ -51,6 +51,8 @@
 - [X] SERVER: Add jQuery Sortable (http://johnny.github.io/jquery-sortable/)
 - [X] SERVER: Add jQuery Tokenfield (http://sliptree.github.io/bootstrap-tokenfield/)
 - [X] SERVER: add lastContext to ScriptManager to retrieve last params and SARAH who query 
+- [X] SERVER: improve bootstrap dropdown
+- [X] SERVER: Add Router hook for plugins
 
 - [X] CLIENT: FULL Rewrite of core C#
 - [X] CLIENT: New AddOn framework

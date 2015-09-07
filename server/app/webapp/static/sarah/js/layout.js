@@ -26,6 +26,19 @@
      return $.extend(true, {}, filter, o);
    };
   
+  /**
+   * Return an array of specified attributes  
+   */
+  $.fn.attrSpecified = function(){
+    var list = {};
+    $(this).each(function() {
+      $.each(this.attributes, function() {
+        if(this.specified) { list[this.name] = this.value; }
+      });
+    });
+    return list;
+  }
+  
   // ------------------------------------------
   //  REGISTER
   // ------------------------------------------
@@ -43,6 +56,7 @@
     registerTokenField();
     registerDate();
     registerSortable();
+    registerDropDown();
   }
   
   // ------------------------------------------
@@ -56,9 +70,26 @@
     });
   }
   
+  var ajaxTypeahead = function($this, query, syncResults, asyncResults){
+    
+    var keyword = $this.attr('data-keywords');
+    if (!keyword){ return; }
+    if (keyword.indexOf(',') > 0){ return syncResults(keyword.split(',')); }
+    
+    ajax(keyword, { 'search' : query  }, function(html){
+      var json = JSON.parse(html);
+      asyncResults(json.suggestion);
+    });
+  }
+  
   var setupTokens = function($wrapper){
     var $wrapper = $wrapper || $(document);
-    $wrapper.find('.tokenfield').tokenfield();
+    $wrapper.find('.tokenfield').each(function(){
+      var $this = $(this);
+      $this.tokenfield({
+        typeahead: [null, { source: function(q, sy, asy){ ajaxTypeahead($this, q, sy, asy); }, async: true }]
+      });
+    })
   }
   
   // ------------------------------------------
@@ -133,6 +164,7 @@
     // Retrive parameters
     var $trigger = $(event.currentTarget);
     var msg = $trigger.attr('title') || '';
+
     open('/confirm?msg='+msg, function(state){
       var evt = $.Event('click');
       evt.which = 1;
@@ -185,8 +217,43 @@
     });
   }
   
+  // ------------------------------------------
+  //  DROPDOWN
+  // ------------------------------------------
   
+  var registerDropDown = function(){
     
+    var $placeholder = $('<ul class="dropdown-menu proxy" role="menu" id="menu-placeholder"></ul>');
+    $(document).on('shown.bs.dropdown', function(event){
+      var $menu  = $(event.target).find('UL');
+      var offset = $menu.offset();
+      
+      $placeholder.css('left', offset.left).css('top', offset.top);
+      $placeholder.html($menu.html());
+      $placeholder.data('parent-proxy', $menu);
+      $placeholder.show();
+      $menu.addClass('hide');
+    });
+    
+    $(document).on('hide.bs.dropdown', function(event){ 
+      $(event.target).find('UL').removeClass('hide');
+      $placeholder.hide(); 
+      // $placeholder.removeData('parent-proxy');
+    });
+    $('BODY').append($placeholder);
+  }
+  
+  $.fn.proxyParents = function(){
+    var $proxy  = this.parents('.proxy');
+    var $parent = $proxy.data('parent-proxy');
+
+    if ($proxy.exists() && $parent){
+      return $parent.parents.apply($parent, arguments);
+    }
+    
+    return this.parents.apply(this, arguments);
+  }
+  
   // ------------------------------------------
   //  DATEPICKER
   // ------------------------------------------
@@ -215,7 +282,7 @@
   var openAjax = function(event){
     // Prevent event
     event.preventDefault();
-    
+
     // Retrive parameters
     var trigger  = event.currentTarget;
     var $trigger = $(trigger);
@@ -234,7 +301,9 @@
       }
     }
     
-    var $target = $trigger.closest('.ajax-body');
+    var $target = $($trigger.attr('data-target'));
+        $target = $target.exists() ? $target : $trigger.closest('.ajax-body');
+    
     refresh(url, params, $target, function(){}, method);
   }
   
@@ -253,7 +322,13 @@
       var content = clean(html);
       if (content){
         $target.html(content.body);
-        $target.attr('class', content.$wrapper.attr('class'));
+        
+        var attributes = content.$wrapper.attrSpecified();
+        for (var key in attributes){
+          console.log(key,'=>',attributes[key]);
+          var attr = (key == 'class') ? attributes[key].replace('fade','fade in') : attributes[key];
+          $target.attr(key, attr);
+        }
       }
       
       // Fire pseudo event

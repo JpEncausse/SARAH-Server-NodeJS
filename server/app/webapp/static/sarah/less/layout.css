@@ -1,22 +1,3 @@
-@font-face {
-  font-family: 'verbcondregular';
-  src: url('../font/VerbCondRegular-webfont.eot');
-  src: url('../font/VerbCondRegular-webfont.eot?#iefix') format('embedded-opentype'), url('../font/VerbCondRegular-webfont.woff') format('woff'), url('../font/VerbCondRegular-webfont.ttf') format('truetype'), url('../font/VerbCondRegular-webfont.svg#verbcondregular') format('svg');
-  font-weight: normal;
-  font-style: normal;
-}
-@font-face {
-  font-family: 'Open Sans Condensed Light';
-  font-style: normal;
-  font-weight: 300;
-  src: local('Open Sans Cond Light'), local('OpenSans-CondensedLight'), url(../font/opensans300.woff) format('woff');
-}
-@font-face {
-  font-family: 'Open Sans Condensed';
-  font-style: normal;
-  font-weight: 700;
-  src: local('Open Sans Condensed Bold'), local('OpenSans-CondensedBold'), url(../font/opensans700.woff) format('woff');
-}
 H1,
 H2,
 H3,
@@ -31,12 +12,6 @@ BODY {
   font-size: 16px;
   text-align: justify;
   text-justify: inter-word;
-}
-.text-strikethrough {
-  text-decoration: line-through;
-}
-.text-capital {
-  text-transform: capitalize;
 }
 ::-webkit-scrollbar {
   width: 10px;
@@ -56,40 +31,6 @@ BODY {
 ::-webkit-scrollbar-thumb:active {
   background: #888;
   -webkit-box-shadow: inset 1px 1px 2px rgba(0, 0, 0, 0.3);
-}
-.modal-body {
-  font-family: 'Open Sans Condensed Light', sans-serif;
-  font-size: 16px;
-  overflow-y: auto;
-  max-height: 600px;
-}
-.modal-body IMG {
-  max-width: 100%;
-}
-.modal-body .modal-stick {
-  margin: -15px;
-}
-.modal-header {
-  color: #FFF;
-  background-color: #D9534F;
-  border-radius: 6px 6px 0px 0px;
-}
-.modal-footer {
-  background-color: #EEE;
-  border-radius: 0px 0px 6px 6px;
-}
-.form-horizontal LABEL,
-.form-horizontal SELECT {
-  text-transform: capitalize;
-}
-.form-horizontal LABEL,
-.form-horizontal SELECT,
-.form-horizontal .nav-tabs {
-  font-family: 'Open Sans Condensed', sans-serif;
-}
-.form-horizontal INPUT[type=number],
-.form-horizontal SELECT {
-  width: 50%;
 }
 HTML,
 BODY,

@@ -1,6 +1,6 @@
 <div class="form-group">
-  <label class="col-md-3 control-label"><%- i18n(field.label) -%></label>
-  <div class="col-md-8">
+  <label class="col-md-<%- field.vertical ? 12 : 3 -%> control-label"><%- i18n(field.label) -%></label>
+  <div class="col-md-<%- field.vertical ? 12 : 8 -%>">
     <% if (field.value === undefined){ field.value=''; } %>
     <% if (typeof field.value === 'boolean'){ %>
     <label class="radio-inline"><input type="radio" name="<%- field.name -%>" value="true"  <%-  field.value ? 'checked="checked"' : '' -%>><%- i18n('field.true') -%></label>
@@ -19,9 +19,9 @@
       <% } %>
     </select>
     <% } else if (field.type == 'keyword') {  %>
-    <input type="text" class="form-control tokenfield" name="<%- field.name -%>" value="<%- field.value -%>" />
+    <input type="text" class="form-control tokenfield" name="<%- field.name -%>" value="<%- field.value -%>" data-keywords="<%- field.keywords -%>"/>
     <% } else if (field.type == 'textarea') {  %>
-    <textarea name="<%- field.name -%>" class="form-control" rows="3"><%- field.value -%></textarea>
+    <textarea name="<%- field.name -%>" class="form-control" rows="<%- (field.rows || 4) -%>"><%- field.value -%></textarea>
     <% } else { %>
     <input class="form-control" type="text" name="<%- field.name -%>" value="<%= field.value %>" placeholder="<%- i18n('field.placeholder') -%>">
     <% } %>

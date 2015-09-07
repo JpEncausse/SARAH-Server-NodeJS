@@ -353,7 +353,8 @@ var SARAH = {
   'asknext'   : asknext,
   
   'getRSSFeed' : getRSSFeed,
-  'Router' : Router
+  'Router'     : Router,
+  'USERAGENT'  : USERAGENT
 }
 
 // Exports SARAH singleton
