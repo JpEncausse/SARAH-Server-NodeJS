@@ -81,22 +81,22 @@ var setGoogleStrategy = function(passport, router){
   var GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
   
   try {
-  var strategy = new GoogleStrategy({
-    clientID: Config.auth['google-key'],
-    clientSecret: Config.auth['google-secret'],
-    callbackURL: "http://localhost:8080/auth/callback",
-    scope: Config.auth['google-services'].split('|') 
-  },
-  function(accessToken, refreshToken, profile, done) {
-    process.nextTick(function () {
-      profile.accessToken = accessToken;
-      profile.refreshToken = refreshToken;
-      return done(null, profile);
-    });
-  })
-  
-  passport.use(strategy);
-  refresh.use(strategy);
+    var strategy = new GoogleStrategy({
+      clientID: Config.auth['google-key'],
+      clientSecret: Config.auth['google-secret'],
+      callbackURL: "http://localhost:8080/auth/callback",
+      scope: Config.auth['google-services'].split('|') 
+    },
+    function(accessToken, refreshToken, profile, done) {
+      process.nextTick(function () {
+        profile.accessToken = accessToken;
+        profile.refreshToken = refreshToken;
+        return done(null, profile);
+      });
+    })
+    
+    passport.use(strategy);
+    refresh.use(strategy);
   } catch(ex){ warn('Wrong Google credential'); }
 }
 

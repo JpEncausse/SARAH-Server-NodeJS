@@ -8,7 +8,7 @@ var l10n    = require('i18n');
 // ------------------------------------------
 
 var init = function(){
-  info('Starting LangManager ...');
+  info('Starting LangManager ...', (__dirname + '/../locales'));
   
   l10n.extendRead = extendRead;
   
@@ -18,7 +18,7 @@ var init = function(){
     updateFiles: false,
     directory: __dirname + '/../locales'
   });
-
+  
   // Set global variable i18n
   global.i18n = function(key){
    var value = l10n.__.apply(this, arguments);

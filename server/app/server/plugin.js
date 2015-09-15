@@ -101,7 +101,7 @@ Plugin.prototype.isDisabled = function(){
 
 Plugin.prototype.getLocale = function(locale){
   var path = SARAH.ConfigManager.PLUGIN+'/'+this.name+'/locales/'+locale+'.js';
-  if (!fs.existsSync(path)){ return; }
+  if (!fs.existsSync(path)){ info('No locals',path); return; }
   try { 
     var json = fs.readFileSync(path);
     info('Loading locales %s', path); 
