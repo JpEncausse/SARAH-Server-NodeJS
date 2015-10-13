@@ -10,9 +10,9 @@
       </div>
 
       <div class="modal-body">
-        <% var msg = blocks.message || message;  %>
+        <% var msg = blocks.message || message; %>
         <% if (msg === true){ %><script>document.location.reload();</script><%- i18n('modal.'+msg) -%>
-        <% } else if (msg) { %><div class="alert alert-info" role="alert"><%- i18n('modal.'+msg) -%></div><% } %>
+        <% } else if (msg && msg.html.length > 0) { %><div class="alert alert-info" role="alert"><%- i18n('modal.'+msg) -%></div><% } %>
         <%- body -%>
       </div>
       

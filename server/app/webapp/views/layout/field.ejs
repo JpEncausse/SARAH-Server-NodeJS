@@ -22,6 +22,8 @@
     <input type="text" class="form-control tokenfield" name="<%- field.name -%>" value="<%- field.value -%>" data-keywords="<%- field.keywords -%>"/>
     <% } else if (field.type == 'textarea') {  %>
     <textarea name="<%- field.name -%>" class="form-control" rows="<%- (field.rows || 4) -%>"><%- field.value -%></textarea>
+    <% } else if (field.type == 'password') {  %>
+    <input class="form-control" type="password" name="<%- field.name -%>" value="<%= field.value %>" placeholder="<%- i18n('field.placeholder') -%>">
     <% } else { %>
     <input class="form-control" type="text" name="<%- field.name -%>" value="<%= field.value %>" placeholder="<%- i18n('field.placeholder') -%>">
     <% } %>

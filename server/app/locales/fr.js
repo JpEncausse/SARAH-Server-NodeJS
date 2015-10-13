@@ -1,12 +1,18 @@
 {
 	"portal.hello": "Bonjour %s !",
 	"portal.login": "Identification",
+	"portal.profile": "Profile",
+	"portal.profile.save": "Enregistrer",
 	"portal.id": "Identifiant",
   "portal.id.placeholder": "Identifiant",
   "portal.password": "Mot de passe",
+  "portal.password.old": "Mot de passe",
+  "portal.password.new": "Nouveau passe",
   "portal.password.placeholder": "Mot de passe",
 	"portal.changelogs" : "Changelogs",
 	"portal.config": "Configuration",
+	"portal.displayname": "Nom complet",
+	"portal.error.missing": "Champs de formulaire manquants",
 	
 	"portlet.config": "Configurer l'extension",
 	"portlet.documentation": "Documentation",

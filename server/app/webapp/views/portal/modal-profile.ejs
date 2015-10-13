@@ -1,0 +1,13 @@
+<% layout('/layout/modal-form.ejs') -%>
+<% block('formUrl', '/profile/create'); %>
+<% block('title', 'CREATE') %>
+
+<% if (op && !message){%>
+<script>
+$('#sarah-modal').modal('hide');
+</script>
+<% } %>
+
+<%- partial('../layout/field.ejs', { field: { 'name' : 'login',        'label' : 'portal.id',            'value' : '' }}) -%>
+<%- partial('../layout/field.ejs', { field: { 'name' : 'password',     'label' : 'portal.password.old',  'value' : '', 'type' : 'password' }}) -%>
+<%- partial('../layout/field.ejs', { field: { 'name' : 'displayname',  'label' : 'portal.displayname',   'value' : '' }}) -%>

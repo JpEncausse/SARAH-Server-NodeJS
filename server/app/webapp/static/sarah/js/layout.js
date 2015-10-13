@@ -160,6 +160,8 @@
     
     // Prevent event
     event.preventDefault();
+    event.stopPropagation();
+    event.stopImmediatePropagation();
     
     // Retrive parameters
     var $trigger = $(event.currentTarget);
@@ -282,7 +284,7 @@
   var openAjax = function(event){
     // Prevent event
     event.preventDefault();
-
+    
     // Retrive parameters
     var trigger  = event.currentTarget;
     var $trigger = $(trigger);
@@ -303,7 +305,8 @@
     
     var $target = $($trigger.attr('data-target'));
         $target = $target.exists() ? $target : $trigger.closest('.ajax-body');
-    
+     // $target = $target.exists() ? $target : undefined;
+        
     refresh(url, params, $target, function(){}, method);
   }
   

@@ -1,12 +1,18 @@
 {
   "portal.hello": "Hello  %s !",
   "portal.login": "Login",
+  "portal.profile": "Profile",
+  "portal.profile.save": "Save",
   "portal.id": "Identifier",
   "portal.id.placeholder": "Identifier",
   "portal.password": "Password",
+  "portal.password.old": "Old Password",
+  "portal.password.new": "New Password",
   "portal.password.placeholder": "Password",
   "portal.changelogs" : "Changelogs",
   "portal.config": "Configuration",
+  "portal.displayname": "Display Name",
+  "portal.error.missing": "Form's field are missing",
   
 	"portlet.config": "Plugin's Configuration",
 	"portlet.documentation": "Documentation",

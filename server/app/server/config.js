@@ -99,7 +99,7 @@ var loadCustoms = function(){
   info('Loading custom properties...', CUSTOM);
   
   var load = fs.readFileSync(CUSTOM,'utf8');
-  var json = {};
+  var json = {}; 
   try { json = JSON.parse(load); } catch (ex){ error('Error in custom.prop: %s', ex.message); }
   
   json['modules']  = retains(json['modules'],  Config['modules']);

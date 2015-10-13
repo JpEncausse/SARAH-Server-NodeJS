@@ -17,13 +17,12 @@
   },
   
   "auth": {
-    "username"      : "admin", 
-    "password"      : "", 
-    "displayName"   : "Administrateur",
     "google-key"        : "",
     "google-secret"     : "",
     "google-refresh"    : "",
-    "google-services"   : "openid|email|https://www.googleapis.com/auth/calendar"
+    "google-services"   : "openid|email|https://www.googleapis.com/auth/calendar",
+    
+    "local-salt" : false
   },
   
   "phantoms" : { },

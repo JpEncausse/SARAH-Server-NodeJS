@@ -1,0 +1,16 @@
+<% layout('../layout/page.ejs') -%>
+
+<div id="profile">
+
+	<h2 style="padding: 0 20px;"><%- i18n('portal.profile') -%></h2>
+	
+	<form class="form-horizontal" method="POST" action="/profile" role="form" accept-charset="UTF-8" enctype="multipart/form-data">
+
+		<%- partial('../layout/field.ejs', { field: { 'name' : 'password',     'label' : 'portal.password.old',  'value' : '', 'type' : 'password' }}) -%>
+		<%- partial('../layout/field.ejs', { field: { 'name' : 'newpassword',  'label' : 'portal.password.new',  'value' : '', 'type' : 'password' }}) -%>
+		<%- partial('../layout/field.ejs', { field: { 'name' : 'displayname',  'label' : 'portal.displayname',   'value' : user.displayName }}) -%>
+	
+	</form>
+</div>
+
+<% stylesheet('/sarah/less/profile.css') %>

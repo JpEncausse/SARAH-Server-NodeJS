@@ -10,9 +10,10 @@
 	<form class="form-horizontal" method="POST" action="/portal/config" role="form" accept-charset="UTF-8" enctype="multipart/form-data">
 	
 		<ul class="nav nav-tabs" role="tablist" id="config_list">
-		  <li class="active"><a href="#bot"  role="tab" data-toggle="tab"><%- i18n('config.bot') -%></a></li>
-		  <li>               <a href="#http" role="tab" data-toggle="tab"><%- i18n('config.http') -%></a></li>
-		  <li>               <a href="#auth" role="tab" data-toggle="tab"><%- i18n('config.authentication') -%></a></li>
+		  <li class="active"><a href="#bot"    role="tab" data-toggle="tab"><%- i18n('config.bot') -%></a></li>
+		  <li>               <a href="#http"   role="tab" data-toggle="tab"><%- i18n('config.http') -%></a></li>
+		  <li>               <a href="#auth"   role="tab" data-toggle="tab"><%- i18n('config.authentication') -%></a></li>
+		  <li>               <a href="#google" role="tab" data-toggle="tab"><%- i18n('config.auth.google') -%></a></li>
       <li class="pull-right"><button type="submit" id="opSave" name="opSave" class="btn btn-danger" value="true"><%- i18n("config.save") -%></button></li>
 		</ul>
 	
@@ -28,12 +29,31 @@
 	      <% } %>
 		  </div>
 		  <div class="tab-pane" id="auth">
-	      <% for (var key in Config.auth) { %>
-	      <% if (key.startsWith('google')) continue; %>
-	      <%- partial('../layout/field.ejs', { field: { 'name' : 'auth.'+key, 'label' : 'config.auth.'+key, 'value' : Config.auth[key] }})    -%>
-	      <% } %>
-	      
-	      <h3><%- i18n('config.auth.google') -%></h3>
+		    
+		    <table class="table table-striped table-bordered table-hover">
+		      <tr>
+            <td class="nowrap"><%- i18n('portal.displayname') -%></td>
+            <td class="nowrap"><%- i18n('portal.id') -%></td>
+            <td class="nowrap"><%- i18n('portal.password') -%></td>
+            <td>&nbsp;</td>
+          </tr>
+		      <% for (var key in Config.auth['local-users']) { %>
+		      <% var usr = Config.auth['local-users'][key] %>
+		      <tr>
+		        <td class="nowrap"><%- usr.displayName -%></td>
+		        <td class="nowrap"><%- usr.login -%></td>
+		        <td><%- usr.password -%></td>
+		        <td>
+		        <% if (usr.login != 'admin'){ %>
+		        <a href="/profile/delete?id=<%- usr.login -%>" data-action="ajax" class="btn btn-danger confirm"><span class="glyphicon glyphicon-trash"></span></a>
+		        <% } %>
+		        </td>
+		      </tr>
+		      <% } %>
+		    </table>
+		    <a href="/profile/create" data-action="modal" class="btn btn-primary">Create</a>
+		  </div>
+		  <div class="tab-pane" id="google">
 	      <div class="alert alert-info" role="alert"><%- i18n('config.auth.google.h') -%></div> 
 	      <% for (var key in Config.auth) { %>
 	      <% if (!key.startsWith('google')) continue; %>
@@ -48,6 +68,7 @@
         
         <div class="text-right"><img src="/sarah/assets/googleapi.jpg"/></div>
 		  </div>
+		  
 		</div>
   </form>
   

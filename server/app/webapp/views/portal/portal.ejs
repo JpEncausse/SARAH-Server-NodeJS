@@ -4,8 +4,6 @@
 <% script('/packery/draggabilly.pkgd.js') %>
 <% script('/sarah/js/portal.js') %>
 
-<h1><%- i18n('portal.hello', req.user.displayName) -%></h1>
-
 <div class="portal">
   <% var plugins = SARAH.PluginManager.getList(); %>
   <% for (var i = 0 ; i < plugins.length ; i++) { %>

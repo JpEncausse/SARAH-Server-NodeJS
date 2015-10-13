@@ -207,9 +207,12 @@ var getLocales = function(locale){
 
 var sort = function(ids, xPos, yPos){
   for(var i = 0 ; i < ids.length ; i++){
-    var cfg = cache[ids[i]].config;
-    cfg.x = parseInt(xPos[i])+1;
-    cfg.y = parseInt(yPos[i])+1;
+    var tmp = cache[ids[i]];
+    if (tmp){
+      var cfg = tmp.config;
+      cfg.x = parseInt(xPos[i])+1;
+      cfg.y = parseInt(yPos[i])+1;
+    }
   }
   getList(true);
 }

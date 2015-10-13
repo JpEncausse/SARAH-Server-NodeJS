@@ -21,6 +21,7 @@
 	  <div class="wrapper">
       <div style="position:relative; left: -20px; top: 5px;" class="pull-left hidden-lg hidden-md"><% if (sidebar.nav) { %><%- partial('menu.ejs', { items : sidebar.nav }) -%><% } %></div>
 	    <div style="position:absolute; right: 20px; top: 5px;">
+	      <a href="/profile"><%- i18n('portal.hello', req.user.displayName) -%></a>
 	      <a href="/lang/fr"><img src="/famfamfam/flags/fr.png" alt="fr"/></a>&nbsp;
 	      <a href="/lang/en"><img src="/famfamfam/flags/us.png" alt="en"/></a>
 	    </div>
