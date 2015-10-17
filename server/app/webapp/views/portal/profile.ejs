@@ -9,7 +9,9 @@
 		<%- partial('../layout/field.ejs', { field: { 'name' : 'password',     'label' : 'portal.password.old',  'value' : '', 'type' : 'password' }}) -%>
 		<%- partial('../layout/field.ejs', { field: { 'name' : 'newpassword',  'label' : 'portal.password.new',  'value' : '', 'type' : 'password' }}) -%>
 		<%- partial('../layout/field.ejs', { field: { 'name' : 'displayname',  'label' : 'portal.displayname',   'value' : user.displayName }}) -%>
-	
+	  
+	  <p align="center"><button class="btn btn-primary" name="opUpdate" value="true"><%- i18n('portal.profile.save') -%></button></p>
+	  
 	</form>
 </div>
 

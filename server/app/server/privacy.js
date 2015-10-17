@@ -183,7 +183,7 @@ Router.post('/profile', function(req, res){
   var username    = req.body.username;
   var password    = req.body.password;
   var newPassword = req.body.newpassword;
-  var displayName = req.body.displayName;
+  var displayName = req.body.displayname;
   
   // Retrieve user
   var user = Config.auth['local-users'][req.user.login];
