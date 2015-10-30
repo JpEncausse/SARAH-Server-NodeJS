@@ -43,12 +43,17 @@ passport.deserializeUser(function(obj, done)  { /*info('deserializeUser', obj);*
 
 var setLocalStrategy = function(passport, router){
   router.get('/login', function(req, res, next) {
-    res.render('portal/login.ejs');
+    res.render('portal/login.ejs', { 'redirect' : req.query.redirect });
   });
   
   router.post('/login', 
-    passport.authenticate('local', { failureRedirect: '/login', failureFlash: false }), 
-                                     function(req, res) { res.redirect('/'); }
+    passport.authenticate('local', { failureRedirect: '/login', failureFlash: false }), function(req, res) { 
+      if (req.body.redirect){
+        res.redirect(req.body.redirect);
+      } else {
+        res.redirect('/');
+      } 
+    }
   );
   
   var LocalStrategy = require('passport-local').Strategy;
@@ -64,7 +69,7 @@ var local = function(username, password, done) {
       
       var passHash = hash(password);
       if (user.password != passHash) { 
-        console.log('Invalid password');
+        info('Invalid password');
         return done(null, false, { message: 'Invalid password' }); 
       }
       
@@ -168,7 +173,9 @@ Router.all('*', function(req, res, next) {
   // Set user authentication 
   if (Config.auth && Config.auth['local-users']){
   if (!req.isAuthenticated()){ 
-    return res.redirect('/login'); }  
+    
+    var redirectURL = encodeURIComponent(req.url);
+    return res.redirect('/login?redirect='+redirectURL); }  
   } else { req.user = { displayName : '' }}
   
   next();
