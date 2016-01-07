@@ -11,7 +11,9 @@
 	<ul class="nav nav-tabs" role="tablist" id="store_list">
 	  <li class="active"><a href="#installed" role="tab" data-toggle="tab"><%- i18n('store.installed') -%></a></li>
 	  <li><a href="#marketplace" role="tab" data-toggle="tab"><%- i18n('store.marketplace') -%></a></li>
+	  <li><a href="#github" role="tab" data-toggle="tab"><%- i18n('store.github') -%></a></li>
 	  <li><a href="#new" role="tab" data-toggle="tab"><%- i18n('store.new') -%></a></li>
+	  
 	  <li class="pull-right">
 	    <form action="/portal/store" method="get">
 	      <input type="text" name="search" class="form-control" placeholder="<%- i18n("store.search") -%>" value="<%- req.query.search || '' -%>"/>
@@ -20,7 +22,8 @@
 	</ul>
 	
 	<div class="tab-content">
-	
+	  
+	  <!-- TAB INSTALLED PLUGIN -->
 	  <% var plugins = SARAH.PluginManager.getCache(); %>
 	  <div class="tab-pane active" id="installed">
       <table class="table table-bordered table-hover table-striped">
@@ -38,13 +41,9 @@
       <tr class="<%- plugin.isDisabled() ? 'text-strikethrough' : '' -%>">
         <td class="text-capital"><strong><%- plugin.name -%></strong></td>
         <td class="text-center fit"><%- plugin.config.version -%> <%- market ? ' / '+ market.v : '' -%></td>
-        <td class="text-center fit">
-          <% if (market){ %>
-          <a class="btn btn-default btn-xs"  href="http://marketplace.sarah.encausse.net/display?name=<%- plugin.name -%>" ><span class="glyphicon glyphicon-shopping-cart"></span></a>
-          <% } %>
-        </td>
+        <td class="text-center fit"><%- partial('../plugin/config-menu.ejs', {'plugin': plugins[i] }) -%></td>
         <td><%- plugin.config.description -%></td>
-        <td class="text-center fit">        
+        <td class="text-center fit">
           <% if (plugin.script){ %>
           <form action='/plugin/config/<%- plugin.name -%>' method='post'>
             <% if (plugin.isDisabled()){ %>
@@ -67,14 +66,13 @@
       </table>
     </div>
       
+    <!-- TAB MARKETPLACE --> 
 	  <div class="tab-pane" id="marketplace">
-	  
-	  <div class="alert alert-danger" role="alert">
-	    <%- i18n('store.alert.marketplace') -%>
-	  </div>
+	  <div class="alert alert-danger" role="alert"><%- i18n('store.alert.marketplace') -%></div>
 	  
 	  <table class="table table-bordered table-hover table-striped">
       <tr>
+        <th>&nbsp;</th>
         <th><%- i18n('store.plugin.name') -%></th>
         <th><%- i18n('store.plugin.version') -%></th>
         <th>&nbsp;</th>
@@ -83,17 +81,16 @@
         <th><%- i18n('store.plugin.description') -%></th>
         <th>&nbsp;</th>
       </tr>
+      <% var counter = 1; %>
 	    <% for(var key in marketplace){ %>
 	    <% var plugin = marketplace[key]; %>
 	    
 	    <% if (SARAH.Marketplace.filter(key, plugin, req.query.search)){ %>
 	    <tr>
-	      <td class="text-capital"><strong><a href="http://marketplace.sarah.encausse.net/display?name=<%- key -%>"><%- key -%></a></strong></td>
+	      <td class="nowrap fit text-right"><%- counter++ -%>.</td>
+	      <td class="text-capital"><strong><%- key -%></strong></td>
 	      <td class="text-center fit"><%- plugin.v -%></td>
-	      <td class="nowrap fit">
-	        <a class="btn btn-default btn-xs" title="<%- i18n('store.plugin.stats') -%>" href="#" data-dl="<%= plugin.dl %>"><span class="glyphicon glyphicon-signal"></span></a>
-	        <a class="btn btn-default btn-xs" title="<%- i18n('store.plugin.download') -%>" href="<%= plugin.dl %>" ><span class="glyphicon glyphicon-cloud-download"></span></a>
-	      </td>
+	      <td class="nowrap fit"><a class="btn btn-default btn-xs" title="<%- i18n('store.plugin.download') -%>" href="<%= plugin.dl %>" ><span class="glyphicon glyphicon-cloud-download"></span></a></td>
 	      <td class="nowrap"><a href="/portal/store?search=<%- plugin.author -%>"><%- plugin.author -%></a></td>
 	      <td><%- plugin.tags -%></td>
 	      <td><%- plugin.description -%></td>
@@ -109,16 +106,28 @@
 	  </table>
 	  </div>
 	  
-	  <div class="tab-pane" id="new">
-
-	    <div class="alert alert-info" role="alert"><%- i18n(req.query.msg || 'store.alert.new-plugin') -%></div>
+	  <!-- TAB GITHUB -->
+	  <div class="tab-pane" id="github">
+	    <div class="alert alert-info" role="alert"><%- i18n(req.query.msg || 'store.alert.github') -%></div>
+	    <form class="form-horizontal" method="POST" action="/portal/store" role="form" accept-charset="UTF-8" enctype="multipart/form-data">
+	      
+	      <%- partial('../layout/field.ejs', { field: { 'name': 'name', 'label': 'store.github.name','value' : '' }}) -%>
+	      <%- partial('../layout/field.ejs', { field: { 'name': 'url',  'label': 'store.github.url', 'value' : '' }}) -%>
+	      
+	      <div class="form-group">
+          <div class="col-md-8 col-md-offset-3">
+            <button type="submit" class="btn btn-primary" name="opGitClone" value="true"><%- i18n('store.github.clone') -%></button>
+          </div>
+        </div>
+	    </form>
+	  </div>
 	  
+	  <!-- TAB NEW -->
+	  <div class="tab-pane" id="new">
+	    <div class="alert alert-info" role="alert"><%- i18n(req.query.msg || 'store.alert.new-plugin') -%></div>
 	    <form class="form-horizontal" method="POST" action="/portal/store" role="form" accept-charset="UTF-8" enctype="multipart/form-data">
 				<%- partial('../layout/field.ejs', { field: { 'name' : 'name',        'label' : 'store.new.name',        'value' : ''    }}) -%>
 				<%- partial('../layout/field.ejs', { field: { 'name' : 'description', 'label' : 'store.new.description', 'value' : ''    }}) -%>
-				<%- partial('../layout/field.ejs', { field: { 'name' : 'version',     'label' : 'store.new.version',     'value' : 0.1   }}) -%>
-				<%- partial('../layout/field.ejs', { field: { 'name' : 'locales',     'label' : 'store.new.locales',     'value' : false }}) -%>
-				<%- partial('../layout/field.ejs', { field: { 'name' : 'www',         'label' : 'store.new.www',         'value' : false }}) -%>
 				<div class="form-group">
           <div class="col-md-8 col-md-offset-3">
             <button type="submit" class="btn btn-primary" name="opCreate" value="true"><%- i18n('store.new.create') -%></button>

@@ -227,10 +227,11 @@
     
     var $placeholder = $('<ul class="dropdown-menu proxy" role="menu" id="menu-placeholder"></ul>');
     $(document).on('shown.bs.dropdown', function(event){
-      var $menu  = $(event.target).find('UL');
-      var offset = $menu.offset();
+      var $target = $(event.target)
+      var $menu   = $target.find('UL');
+      var offset = $target.offset();
       
-      $placeholder.css('left', offset.left).css('top', offset.top);
+      $placeholder.css('left', offset.left).css('top', offset.top + 30);
       $placeholder.html($menu.html());
       $placeholder.data('parent-proxy', $menu);
       $placeholder.show();

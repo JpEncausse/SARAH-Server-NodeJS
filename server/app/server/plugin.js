@@ -103,7 +103,7 @@ Plugin.prototype.getLocale = function(locale){
   var path = SARAH.ConfigManager.PLUGIN+'/'+this.name+'/locales/'+locale+'.js';
   if (!fs.existsSync(path)){ info('No locals',path); return; }
   try { 
-    var json = fs.readFileSync(path);
+    var json = fs.readFileSync(path,'utf-8');
     info('Loading locales %s', path); 
     if (json) return JSON.parse(json); 
   } 
@@ -307,9 +307,18 @@ Router.get('/plugin/help/:name', function(req, res, next) {
   next();
 });
 
+Router.get('/plugin/github/:name', function(req, res, next) { 
+  var name   = req.params.name; 
+  SARAH.Marketplace.getCommits(name, function(commits){
+    res.render('plugin/github.ejs', {
+      'title'   : i18n('modal.plugin.github', name),
+      'commits' : commits
+    });
+  });
+});
+
 Router.get('/plugin/config/:name', function(req, res, next) { 
   var name   = req.params.name; 
-  var plugin = find(name);
   return res.render('plugin/config.ejs', {'title' : i18n('modal.plugin.config', name) });
 });
 
@@ -330,9 +339,9 @@ Router.post('/plugin/config/:name', function(req, res, next) {
     Config[pfx][name][prop] = value;
   }
   SARAH.ConfigManager.save();
-  
+
   var referer = req.headers.referer;
-  if (referer && !referer.endsWith('/portal')){
+  if (referer && referer.indexOf('/portal') < 0){
     return res.redirect(referer);
   } else {
     return res.render('plugin/config.ejs', {'title' : i18n('modal.plugin.config', name), 'message' : true });

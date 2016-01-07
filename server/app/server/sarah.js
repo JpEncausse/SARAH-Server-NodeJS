@@ -295,8 +295,9 @@ var listen = function(pause){
   return remote({ 'listen' : pause });
 }
 
-var picture = function(device, path){
-  var qs = { 'picture' : 'true' };
+var picture = function(device, path, type){
+  var qs = { 'picture' : type || 'true'  };
+
   if (path){ qs.picture = path; }
   if (device){ qs.device = device; }
   return remote(qs);

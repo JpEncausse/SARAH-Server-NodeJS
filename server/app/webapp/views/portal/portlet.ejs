@@ -9,20 +9,7 @@
   </div>
   
   <div class="portlet-footer dropup">
-  
-    <!-- Dropdown Menu -->
-    <button type="button" class="btn btn-default btn-xs pull-right" id="mnu<%- id -%>" data-toggle="dropdown">
-      <span class="glyphicon glyphicon-cog"></span>
-    </button>
-    <ul class="dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="mnu<%- id -%>">
-	    <li role="presentation"><a role="menuitem" tabindex="-1" href="/plugin/config/<%- id -%>" data-action="modal"><%- i18n('portlet.config') -%></a></li>
-	    <% if (plugin.index){ %>
-	    <li role="presentation"><a role="menuitem" tabindex="-1" href="/plugin/help/<%- id -%>" data-action="modal"><%- i18n('portlet.documentation') -%></a></li>
-	    <% } %>
-	    <li role="presentation" class="divider"></li>
-	    <li role="presentation"><a role="menuitem" tabindex="-1" href="/plugin/edit/<%- id -%>" data-action="modal"><%- i18n('portlet.edit-files') -%></a></li>
-    </ul>
-
+    <%- partial('../plugin/config-menu.ejs', {'plugin': plugin }) -%>
     <span class='info hide'><%- i18n('portlet.loading') -%></span>
   </div>
 </div>

@@ -93,7 +93,7 @@ var server = http.createServer(app);
 
 // Set EJS Engine
 var engine = require('ejs-locals');
-app.engine('ejs', engine);
+app.engine('ejs',  engine);
 app.engine('html', engine);
 app.set('views', __webapp + '/views');
 app.set('view engine', 'ejs');

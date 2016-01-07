@@ -31,7 +31,7 @@ var path   = require('path');
 var ROOT   = path.normalize(__dirname+'/..');
 
 var SERVER = path.normalize(ROOT+'/server/server.prop');
-var PLUGIN = process.env.PATH_PLUGINS || path.normalize(ROOT+'/../../plugins');
+var PLUGIN = process.env.PLUGINS_PATH || path.normalize(ROOT+'/../../plugins');
 var VIEW   = path.normalize(ROOT+'/webapp/views');
 var CUSTOM = path.normalize(ROOT+'/data/custom.prop');
 

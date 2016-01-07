@@ -1,8 +1,0 @@
-{
-  "modules" : { 
-    "template"  : {
-      "description": "template_description",
-      "version": "template_version"
-    }
-  }
-}

@@ -17,11 +17,6 @@
   },
   
   "auth": {
-    "google-key"        : "",
-    "google-secret"     : "",
-    "google-refresh"    : "",
-    "google-services"   : "openid|email|https://www.googleapis.com/auth/calendar",
-    
     "local-salt" : false
   },
   

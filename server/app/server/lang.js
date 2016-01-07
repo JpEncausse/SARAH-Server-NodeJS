@@ -2,6 +2,7 @@ var fs      = require('fs');
 var extend  = require('extend');
 var express = require('express');
 var l10n    = require('i18n');
+var marked  = require('marked');
 
 // ------------------------------------------
 //  CONSTRUCTOR
@@ -27,7 +28,20 @@ var init = function(){
    return value;
   };
   
+  // Set global variable markdown
+  global.marked = markdown;
+  
   return LangManager;
+}
+
+var markdown  = function(path){
+  var lang = l10n.getLocale()
+  
+  var path = SARAH.ConfigManager.PLUGIN + '/' + path.replace('/','/locales/') + '.' + lang + '.md'; 
+  if (!fs.existsSync(path)){ return; }
+    
+  var markdown = fs.readFileSync(path, 'utf8');
+  return '<div class="markdown">' + marked(markdown) + '</div>';
 }
 
 var extendRead = function(locale){
@@ -39,7 +53,7 @@ var extendRead = function(locale){
   var path = __dirname + '/../locales/' + locale + '.js';
   if (fs.existsSync(path)){
     try {
-      var json = fs.readFileSync(path);
+      var json = fs.readFileSync(path, 'utf8');
       var core = JSON.parse(json);
       extend(true, prop, core);
     } 

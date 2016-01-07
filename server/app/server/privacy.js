@@ -32,7 +32,6 @@ var findByUsername = function (username, fn) {
 // ------------------------------------------
 
 var passport = require('passport');
-var refresh  = require('passport-oauth2-refresh');
 
 passport.serializeUser  (function(user, done) { /*info('serializeUser',   user);*/ done(null, user); });
 passport.deserializeUser(function(obj, done)  { /*info('deserializeUser', obj);*/  done(null, obj);  });
@@ -75,69 +74,6 @@ var local = function(username, password, done) {
       
       return done(null, user);
     });
-  });
-}
-
-// ------------------------------------------
-//  GOOGLE STRATEGY
-// ------------------------------------------
-
-var setGoogleStrategy = function(passport, router){
-  router.get('/auth', 
-    passport.authenticate('google', { session: false })
-  );
-  
-  router.get('/auth/callback',  
-    passport.authenticate('google', { session: false, failureRedirect: '/portal/config' }), callback 
-  );
-  
-  var GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
-  
-  try {
-    var strategy = new GoogleStrategy({
-      clientID: Config.auth['google-key'],
-      clientSecret: Config.auth['google-secret'],
-      callbackURL: "http://localhost:8080/auth/callback",
-      scope: Config.auth['google-services'].split('|') 
-    },
-    function(accessToken, refreshToken, profile, done) {
-      process.nextTick(function () {
-        profile.accessToken = accessToken;
-        profile.refreshToken = refreshToken;
-        return done(null, profile);
-      });
-    })
-    
-    passport.use(strategy);
-    refresh.use(strategy);
-  } catch(ex){ warn('Wrong Google credential'); }
-}
-
-var callback = function(req, res) {
-  ACCESS_TIMEOUT = (new Date()).getTime();
-  ACCESS_TOKEN = req.user.accessToken;
-  
-  // Save refresh token for long use
-  Config.auth['google-refresh'] = req.user.refreshToken;
-  SARAH.ConfigManager.save();
-  
-  res.redirect('/portal/config');
-}
-
-var ACCESS_TIMEOUT = 0;
-var ACCESS_TOKEN = false;
-var getGoogleAccessToken = function(callback){
-  var token = Config.auth['google-refresh'];
-  if (!token) { return callback(false);  }
-  var now = (new Date()).getTime();
-  if (ACCESS_TOKEN && now - ACCESS_TIMEOUT < 1000*60*60) { return callback(ACCESS_TOKEN); } // 1 hour
-  
-  // Need a refresh
-  // info('Refresh Google Access Token');
-  refresh.requestNewAccessToken('google', token, function(err, accessToken, refreshToken) {
-    ACCESS_TIMEOUT = (new Date()).getTime();
-    ACCESS_TOKEN = accessToken;
-    callback(ACCESS_TOKEN);
   });
 }
 
@@ -251,7 +187,8 @@ var hash   = function(password){
 var salt = function(){
   if (Config.auth['local-salt'] != false) return;
   
-  Config.auth['local-salt'] = 'salt' + (Math.random()*10000);
+  Config.auth['local-uid']  = 'uid-' + (new Date()).getTime();
+  Config.auth['local-salt'] = ('salt' + (Math.random()*10000)).replace('.','0');
   Config.auth['local-users']          = Config.auth['local-users']          || {};
   Config.auth['local-users']['admin'] = Config.auth['local-users']['admin'] || {};
   
@@ -269,8 +206,7 @@ var salt = function(){
 
 var PrivacyManager = {
   'init' : init,
-  'Router' : Router,
-  'getGoogleAccessToken' : getGoogleAccessToken
+  'Router' : Router
 }
 
 // Exports Manager

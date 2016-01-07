@@ -66,7 +66,7 @@ var filter = function(name, plugin, search){
 // ------------------------------------------
 
 var install = function(name, callback){
-  var market = cache[name]; console.log(market);
+  var market = cache[name]; 
   if (!market || !market.dl){ return callback(); }
   
   // Delete previous zip if exists
@@ -109,42 +109,44 @@ var install = function(name, callback){
 }
 
 // ------------------------------------------
-//  CREATE
+//  GITHUB
 // ------------------------------------------
 
-var create = function(body, callback){
+var TEMPLATE = 'https://template.sarah.encausse.net';
+var Git = require("nodegit");
+
+var clone = function(body, callback){
+  if (!body.name) { return callback('store.github.msg.name'); }
+  if (!body.url)  { return callback('store.github.msg.url');  }
   
+  var name = body.name.toLowerCase().replace(' ', '_');
+  var path = SARAH.ConfigManager.PLUGIN+'/'+name;
+  if (fs.existsSync(path)){ return callback('store.msg.exists'); }
+  
+  gitClone(body.url, path, callback);
+}
+
+var create = function(body, callback){
   if (!body.name) { return callback('store.new.msg.name'); }
   
-  var matches = {};
-  matches.template             = body.name.toLowerCase().replace(' ', '_');
-  matches.template_description = body.description;
-  matches.template_version     = body.version;
+  var name = body.name.toLowerCase().replace(' ', '_');
+  var path = SARAH.ConfigManager.PLUGIN+'/'+name;
+  if (fs.existsSync(path)){ return callback('store.msg.exists'); }
   
-  // Copy all files
-  var src = SARAH.ConfigManager.ROOT+'/template';
-  var dst = SARAH.ConfigManager.PLUGIN+'/'+matches.template;
+  gitClone(TEMPLATE, body.name, function(){
+    rename(path, { 
+      "template": name, 
+      "template_description": body.description 
+    });
+    callback('store.msg.ok');
+  });
+}
 
-  if (fs.existsSync(dst)){ return callback('store.new.msg.exists'); }
-  fs.copySync(src, dst);
-  
-  // Clean files
-  if (!Helper.parse(body.locales)){
-    try { fs.removeSync(dst+'/locales');            } catch(e){}
-    try { fs.removeSync(dst+'/template_en_US.xml'); } catch(e){}
-  }
-  if (!Helper.parse(body.www)){
-    try { fs.removeSync(dst+'/www');          } catch(e){}
-    try { fs.removeSync(dst+'/portlet.ejs');  } catch(e){}
-    try { fs.removeSync(dst+'/index.ejs');    } catch(e){}
-    try { fs.removeSync(dst+'/template.ejs'); } catch(e){}
-  }
-  
-  // Search/Replace
-  rename(dst, matches);
-  
-  // Done
-  callback('store.new.msg.ok');
+var gitClone = function(giturl, path, callback){
+  info('Cloning repository %s at %s', giturl, path);
+  Git.Clone(giturl, path).then(function(repository) {
+    callback('store.msg.ok');
+  });
 }
 
 var rename = function(file, matches){
@@ -181,6 +183,29 @@ var rename = function(file, matches){
   fs.writeFile(file, data, 'utf8');
 }
 
+
+// ------------------------------------------
+//  TEST
+// ------------------------------------------
+
+var getMostRecentCommit = function(repository) {
+  return repository.getBranchCommit("master");
+};
+
+var getCommitMessage = function(commit) {
+  return commit.message();
+};
+
+var getCommits = function(name, callback){
+  var path = SARAH.ConfigManager.PLUGIN+'/'+name;
+  var err  = function(){ callback(); }
+  
+  Git.Repository.open(path)
+    .then(getMostRecentCommit, err)
+    .then(getCommitMessage,    err)
+    .then(function(message) { callback(message); }, err);
+}
+
 // ------------------------------------------
 //  ROUTER
 // ------------------------------------------
@@ -206,8 +231,12 @@ Router.post('/portal/store', function(req, res, next) {
   var name = req.body.opDelete;
   if (name){ SARAH.PluginManager.remove(name, callback); }
   
-  var name = req.body.opCreate;
-  if (name){ create(req.body, callback); }
+  var op = req.body.opCreate;
+  if (op){ create(req.body, callback); }
+  
+  var op = req.body.opGitClone;
+  if (op){ clone(req.body, callback); }
+  
 });
 
 // ------------------------------------------
@@ -215,9 +244,10 @@ Router.post('/portal/store', function(req, res, next) {
 // ------------------------------------------
 
 var Marketplace = {
-  'init'   : init,
-  'filter' : filter,
-  'Router' : Router
+  'init'       : init,
+  'filter'     : filter,
+  'getCommits' : getCommits,
+  'Router'     : Router
 }
 
 // Exports Manager
