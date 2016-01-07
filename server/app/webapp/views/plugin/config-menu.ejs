@@ -1,0 +1,12 @@
+<button type="button" class="btn btn-default btn-xs pull-right" id="mnu<%- plugin.name -%>" data-toggle="dropdown">
+  <span class="glyphicon glyphicon-cog"></span>
+</button>
+<ul class="dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="mnu<%- plugin.name -%>">
+  <li role="presentation"><a role="menuitem" tabindex="-1" href="/plugin/github/<%- plugin.name -%>" data-action="modal"><%- i18n('portlet.github') -%></a></li>
+  <li role="presentation"><a role="menuitem" tabindex="-1" href="/plugin/config/<%- plugin.name -%>" data-action="modal"><%- i18n('portlet.config') -%></a></li>
+  <% if (plugin.index){ %>
+    <li role="presentation"><a role="menuitem" tabindex="-1" href="/plugin/help/<%- plugin.name -%>" data-action="modal"><%- i18n('portlet.documentation') -%></a></li>
+  <% } %>
+  <li role="presentation" class="divider"></li>
+  <li role="presentation"><a role="menuitem" tabindex="-1" href="/plugin/edit/<%- plugin.name -%>" data-action="modal"><%- i18n('portlet.edit-files') -%></a></li>
+</ul>

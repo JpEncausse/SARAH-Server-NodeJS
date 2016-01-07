@@ -1,0 +1,9 @@
+<% layout('../layout/modal.ejs') -%>
+<%
+  var name = req.params.name;
+  var plugin = SARAH.PluginManager.find(name); 
+%>
+
+<h3><%- i18n('modal.plugin.github') -%></h3>
+<%- commits -%>
+
