@@ -3,7 +3,7 @@ var fs      = require('fs-extra');
 var request = require('request');
 var express = require('express');
 var extend  = require('extend');
-var unzip   = require('unzip');
+var AdmZip  = require('adm-zip'); 
 var path    = require('path');
 
 // ------------------------------------------
@@ -65,56 +65,59 @@ var filter = function(name, plugin, search){
 //  INSTALL
 // ------------------------------------------
 
+
 var install = function(name, callback){
   var market = cache[name]; 
   if (!market || !market.dl){ return callback(); }
+  installURL(market.dl, SARAH.ConfigManager.PLUGIN+'/'+name, callback);
+}
+
+var installURL = function(url, path, callback){
   
   // Delete previous zip if exists
-  var drop = TMP + '/' + name;
-  if ( fs.existsSync(drop)){ fs.removeSync(drop); }
-  if (!fs.existsSync(drop)){ fs.mkdirSync(drop); }
-  info('Downloading %s to store...', SARAH.ConfigManager.PLUGIN+'/'+name);
+  var archive = TMP + '/' + 'tmp.zip';
+  var drop    = TMP + '/' + 'archive';
+  if ( fs.existsSync(archive)){ fs.unlinkSync(archive); }
+  if ( fs.existsSync(drop))   { fs.removeSync(drop);    }
+  if (!fs.existsSync(drop))   { fs.mkdirSync(drop);     }
+  info('Downloading %s to store...', url, drop, path);
   
   // Download file
   request({ 
-    'uri' : market.dl, 
+    'uri' : url, 
     'headers': {'user-agent': SARAH.USERAGENT} 
   }, 
   function (err, response, json){
     if (err || response.statusCode != 200) {
-      warn("Can't download remote plugin");
+      warn("Can't download remote plugin", url, err);
       return callback();
     }
-  }).pipe(unzip.Extract({ path: drop }).on('close', function(){
+  }).pipe(fs.createWriteStream(archive)).on('close', function(){
+    
+    var zip = new AdmZip(archive);
+    zip.extractAllTo(drop, true);
     
     // Recursive function 
-    var copy = function(root){
+    var copy = function(root){ 
       var files = fs.readdirSync(root);
-      if (files.length != 1){
-        return fs.renameSync(root, SARAH.ConfigManager.PLUGIN+'/'+name);
-      } 
+      if (files.length != 1){ return fs.renameSync(root, path); } 
       
       root += '/' + files[0];
-      if (fs.statSync(root).isDirectory()){
-        copy(root);
-      }
+      if (fs.statSync(root).isDirectory()){ copy(root); }
     }
     
     copy(drop); // Perform copy
     fs.removeSync(drop); // Clean remaining stuff
     callback();
     
-  }));
-
+  });
 }
 
 // ------------------------------------------
 //  GITHUB
 // ------------------------------------------
 
-var TEMPLATE = 'https://template.sarah.encausse.net';
-var Git = require("nodegit");
-
+var TEMPLATE = 'http://template.sarah.encausse.net';
 var clone = function(body, callback){
   if (!body.name) { return callback('store.github.msg.name'); }
   if (!body.url)  { return callback('store.github.msg.url');  }
@@ -130,10 +133,10 @@ var create = function(body, callback){
   if (!body.name) { return callback('store.new.msg.name'); }
   
   var name = body.name.toLowerCase().replace(' ', '_');
-  var path = SARAH.ConfigManager.PLUGIN+'/'+name;
+  var path = SARAH.ConfigManager.PLUGIN+'/'+body.name;
   if (fs.existsSync(path)){ return callback('store.msg.exists'); }
   
-  gitClone(TEMPLATE, body.name, function(){
+  gitClone(TEMPLATE, path, function(){
     rename(path, { 
       "template": name, 
       "template_description": body.description 
@@ -142,11 +145,18 @@ var create = function(body, callback){
   });
 }
 
+/*
+var Git = require("nodegit");
 var gitClone = function(giturl, path, callback){
   info('Cloning repository %s at %s', giturl, path);
   Git.Clone(giturl, path).then(function(repository) {
     callback('store.msg.ok');
   });
+}*/
+
+var gitClone = function(giturl, path, callback){
+  var url = giturl.replace('.git', '/archive/master.zip');
+  installURL(url, path, callback);
 }
 
 var rename = function(file, matches){

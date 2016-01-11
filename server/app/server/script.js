@@ -97,28 +97,6 @@ var call = function(name, options, callback){
     error('call('+name+') ', ex.message);
     next();
   }
-  
-  // Run script
-  /*
-  require('zone').enable();
-  var start  = (new Date()).getTime();
-  zone.create(function Call() {
-    
-    plug.action(options, function(data){ zone.return(data); });
-    
-  }).complete(function(err, args){
-    
-    if (timeout){ clearTimeout(timeout); } else { return; }
-    var end = (new Date()).getTime();
-    info('call('+name+') in ', (end-start)+'ms');
-    
-    if (callback){ callback(data); }
-    
-  }).catch(function(err) {
-     error('call('+name+') ', ex.message);
-     if (callback){ callback(); }
-  });
-  */
 }
 
 // ------------------------------------------
