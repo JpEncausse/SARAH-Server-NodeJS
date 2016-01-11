@@ -8,17 +8,20 @@ sudo apt-get install -y build-essential git
 
 # Installing Node.js
 
-If RPI A, B, B+
-wget https://nodejs.org/dist/v4.2.4/node-v4.2.4-linux-armv6l.tar.gz
-tar -xvf node-v4.2.4-linux-armv6l.tar.gz
-cd node-v4.2.4-linux-armv6l
+	#Pour connaitre la version du raspberry http://www.raspberrypi-spy.co.uk/2012/09/checking-your-raspberry-pi-board-version/
+	#Pour connaitre la distribution http://unix.stackexchange.com/questions/6345/how-can-i-get-distribution-name-and-version-number-in-a-simple-shell-script
 
-#If RPI 2
-#wget https://nodejs.org/dist/v4.2.2/node-v4.2.2-linux-armv7l.tar.xz
-#tar -xvf node-v4.2.2-linux-armv7l.tar.xz
-#cd node-v4.2.2-linux-armv7l
+	#If RPI A, B, B+
+	wget https://nodejs.org/dist/v4.2.4/node-v4.2.4-linux-armv6l.tar.gz
+	tar -xvf node-v4.2.4-linux-armv6l.tar.gz
+	cd node-v4.2.4-linux-armv6l
 
-sudo cp -R * /usr/local/
+	#If RPI 2
+	#wget https://nodejs.org/dist/v4.2.2/node-v4.2.2-linux-armv7l.tar.xz
+	#tar -xvf node-v4.2.2-linux-armv7l.tar.xz
+	#cd node-v4.2.2-linux-armv7l
+
+	sudo cp -R * /usr/local/
 
 cd
 
@@ -31,5 +34,6 @@ cp server/server.prop data/custom.prop
 
 cd /home/pi/SARAH-Server-NodeJS/
 
-sudo env "NODE_PATH=$PWD/server/app/node_modules"
+#sudo env "NODE_PATH=$PWD/server/app/node_modules"
+export NODE_PATH=$PWD/server/app/node_modules
 sudo -E node /home/pi/SARAH-Server-NodeJS/server/app/app.js
