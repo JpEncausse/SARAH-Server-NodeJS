@@ -100,10 +100,12 @@ var installURL = function(url, path, callback){
     // Recursive function 
     var copy = function(root){ 
       var files = fs.readdirSync(root);
-      if (files.length != 1){ return fs.renameSync(root, path); } 
-      
-      root += '/' + files[0];
-      if (fs.statSync(root).isDirectory()){ copy(root); }
+      if (files.length != 1){ 
+        fs.rename(root, path, function(){}); 
+      } else {
+        root += '/' + files[0];
+        if (fs.statSync(root).isDirectory()){ copy(root); }
+      }
     }
     
     copy(drop); // Perform copy
@@ -182,7 +184,7 @@ var rename = function(file, matches){
   file = path.normalize(file);
   
   var ext = path.extname(file);
-  if (!(ext == '.html' || ext == '.ejs' || ext == '.js' || ext == '.xml' || ext == '.prop' || ext == '.css' || ext == '.md')){ return; }
+  if (!(ext == '.html' || ext == '.ejs' || ext == '.js' || ext == '.xml' || ext == '.prop' || ext == '.less' || ext == '.md')){ return; }
   
   // Search and replace
   var data = fs.readFileSync(file, 'utf8');

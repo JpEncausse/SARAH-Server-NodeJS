@@ -291,6 +291,17 @@ var trigger = function(event, data){
   ee.emit(event, data);
 }
 
+var socket = function(io){
+  io.on('connection', function(socket){
+    socket.on('disconnect', function(){ });
+    
+    for(var name in cache){
+      plugin = cache[name].getInstance();
+      if (plugin.socket) plugin.socket(io, socket);
+    }
+  });
+}
+
 // ------------------------------------------
 //  ROUTER
 // ------------------------------------------
@@ -418,6 +429,7 @@ var PluginManager = {
   'exists'        : exists,
   'remove'        : remove,
   
+  'socket'        : socket,            
   'trigger'       : trigger,
   'listen'        : listen,
   

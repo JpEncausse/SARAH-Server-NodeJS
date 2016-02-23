@@ -85,11 +85,15 @@ require('./server/sarah.js').init();
 
 // Init Express
 var __webapp = __dirname + '/webapp';
-var express = require('express');
-var http = require('http');
+var express  = require('express');
+var http     = require('http');
 
-var app = module.exports = express();
-var server = http.createServer(app);
+var app      = module.exports = express();
+var server   = http.createServer(app);
+
+// SOCKET-IO
+var io       = require('socket.io')(server);
+SARAH.PluginManager.socket(io);
 
 // Set EJS Engine
 var engine = require('ejs-locals');
