@@ -174,21 +174,28 @@ Router.all('/profile/create', function(req, res){
 //  CRYPTO
 // ------------------------------------------
 
-var Crypto = require('crypto');
+var bcrypt = require('bcryptjs');
+
 var ITERATION = 10000;
 var hash   = function(password){
   var salt = Config.auth['local-salt'];
-      salt = new Buffer(salt, 'hex');
-  var key  = Crypto.pbkdf2Sync(password, salt, ITERATION, 64);
-  var hash = 'pbkdf2$' + ITERATION + '$' + key.toString('hex') + '$' + salt.toString('hex');
+  //    salt = new Buffer(salt, 'hex');
+  //var key  = Crypto.pbkdf2Sync(password, salt, ITERATION, 64);
+  //var hash = 'pbkdf2$' + ITERATION + '$' + key.toString('hex') + '$' + salt.toString('hex');
+  var hash = bcrypt.hashSync(password, salt);
   return hash;
 }
 
 var salt = function(){
   if (Config.auth['local-salt'] != false) return;
   
-  Config.auth['local-uid']  = 'uid-' + (new Date()).getTime();
-  Config.auth['local-salt'] = ('salt' + (Math.random()*10000)).replace('.','0');
+  // var salt = ('salt' + (Math.random()*10000)).replace('.','0');
+  var salt = bcrypt.genSaltSync(10);
+  var sarahId = 'uid-' + (new Date()).getTime();
+  registerSARAH(sarahId);
+  
+  Config.auth['local-uid']  = sarahId
+  Config.auth['local-salt'] = salt
   Config.auth['local-users']          = Config.auth['local-users']          || {};
   Config.auth['local-users']['admin'] = Config.auth['local-users']['admin'] || {};
   
@@ -197,6 +204,21 @@ var salt = function(){
   admin.password    = hash('password');
   admin.displayName = 'Admin';
   SARAH.ConfigManager.save();
+}
+
+var AMZID = '5eVBwYTHp21nzkXrcCC6e4UM93Pr2QMX5cLeD50S';
+var registerSARAH = function(id){
+ var url = 'http://tracker.sarah.encausse.net';
+  request({ 
+    'uri' : url+'?trackerId='+id, 
+    'json' : true, 
+    'headers': {'x-api-key': AMZID } 
+  },
+  function (err, response, json){
+    if (err || response.statusCode != 200) { 
+      return warn("Can't register SARAH into the Cloud", err, response);   
+    }
+  });
 }
 
 
