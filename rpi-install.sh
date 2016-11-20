@@ -26,7 +26,7 @@ if [ ! -f "/usr/local/bin/node" ];then
 					tar -xvf node-v4.2.4-linux-armv6l.tar.gz
 					cd node-v4.2.4-linux-armv6l
 	                ;;
-	        a01041 | a21041)
+	        a01041 | a21041 | a22082 | a02082)
 					#If RPI 2
 					wget https://nodejs.org/dist/v4.2.2/node-v4.2.2-linux-armv7l.tar.xz
 					tar -xvf node-v4.2.2-linux-armv7l.tar.xz
